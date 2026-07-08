@@ -23,6 +23,7 @@ import { Route as AuthenticatedCalculatorRouteImport } from './routes/_authentic
 import { Route as AuthenticatedArrearsRouteImport } from './routes/_authenticated/arrears'
 import { Route as AuthenticatedApplicationsRouteImport } from './routes/_authenticated/applications'
 import { Route as AuthenticatedAffordabilityRouteImport } from './routes/_authenticated/affordability'
+import { Route as AuthenticatedCustomersCustomerIdRouteImport } from './routes/_authenticated/customers.$customerId'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin/users'
 import { Route as AuthenticatedAdminProductsRouteImport } from './routes/_authenticated/admin/products'
 import { Route as AuthenticatedAdminAuditRouteImport } from './routes/_authenticated/admin/audit'
@@ -99,6 +100,12 @@ const AuthenticatedAffordabilityRoute =
     path: '/affordability',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedCustomersCustomerIdRoute =
+  AuthenticatedCustomersCustomerIdRouteImport.update({
+    id: '/$customerId',
+    path: '/$customerId',
+    getParentRoute: () => AuthenticatedCustomersRoute,
+  } as any)
 const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
   id: '/admin/users',
   path: '/admin/users',
@@ -124,7 +131,7 @@ export interface FileRoutesByFullPath {
   '/applications': typeof AuthenticatedApplicationsRoute
   '/arrears': typeof AuthenticatedArrearsRoute
   '/calculator': typeof AuthenticatedCalculatorRoute
-  '/customers': typeof AuthenticatedCustomersRoute
+  '/customers': typeof AuthenticatedCustomersRouteWithChildren
   '/loans': typeof AuthenticatedLoansRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/repayments': typeof AuthenticatedRepaymentsRoute
@@ -133,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/customers/$customerId': typeof AuthenticatedCustomersCustomerIdRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
@@ -141,7 +149,7 @@ export interface FileRoutesByTo {
   '/applications': typeof AuthenticatedApplicationsRoute
   '/arrears': typeof AuthenticatedArrearsRoute
   '/calculator': typeof AuthenticatedCalculatorRoute
-  '/customers': typeof AuthenticatedCustomersRoute
+  '/customers': typeof AuthenticatedCustomersRouteWithChildren
   '/loans': typeof AuthenticatedLoansRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/repayments': typeof AuthenticatedRepaymentsRoute
@@ -151,6 +159,7 @@ export interface FileRoutesByTo {
   '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/customers/$customerId': typeof AuthenticatedCustomersCustomerIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -161,7 +170,7 @@ export interface FileRoutesById {
   '/_authenticated/applications': typeof AuthenticatedApplicationsRoute
   '/_authenticated/arrears': typeof AuthenticatedArrearsRoute
   '/_authenticated/calculator': typeof AuthenticatedCalculatorRoute
-  '/_authenticated/customers': typeof AuthenticatedCustomersRoute
+  '/_authenticated/customers': typeof AuthenticatedCustomersRouteWithChildren
   '/_authenticated/loans': typeof AuthenticatedLoansRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/repayments': typeof AuthenticatedRepaymentsRoute
@@ -171,6 +180,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/_authenticated/admin/products': typeof AuthenticatedAdminProductsRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/_authenticated/customers/$customerId': typeof AuthenticatedCustomersCustomerIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -191,6 +201,7 @@ export interface FileRouteTypes {
     | '/admin/audit'
     | '/admin/products'
     | '/admin/users'
+    | '/customers/$customerId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
@@ -209,6 +220,7 @@ export interface FileRouteTypes {
     | '/admin/audit'
     | '/admin/products'
     | '/admin/users'
+    | '/customers/$customerId'
   id:
     | '__root__'
     | '/_authenticated'
@@ -228,6 +240,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/audit'
     | '/_authenticated/admin/products'
     | '/_authenticated/admin/users'
+    | '/_authenticated/customers/$customerId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -336,6 +349,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAffordabilityRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/customers/$customerId': {
+      id: '/_authenticated/customers/$customerId'
+      path: '/$customerId'
+      fullPath: '/customers/$customerId'
+      preLoaderRoute: typeof AuthenticatedCustomersCustomerIdRouteImport
+      parentRoute: typeof AuthenticatedCustomersRoute
+    }
     '/_authenticated/admin/users': {
       id: '/_authenticated/admin/users'
       path: '/admin/users'
@@ -360,12 +380,27 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedCustomersRouteChildren {
+  AuthenticatedCustomersCustomerIdRoute: typeof AuthenticatedCustomersCustomerIdRoute
+}
+
+const AuthenticatedCustomersRouteChildren: AuthenticatedCustomersRouteChildren =
+  {
+    AuthenticatedCustomersCustomerIdRoute:
+      AuthenticatedCustomersCustomerIdRoute,
+  }
+
+const AuthenticatedCustomersRouteWithChildren =
+  AuthenticatedCustomersRoute._addFileChildren(
+    AuthenticatedCustomersRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAffordabilityRoute: typeof AuthenticatedAffordabilityRoute
   AuthenticatedApplicationsRoute: typeof AuthenticatedApplicationsRoute
   AuthenticatedArrearsRoute: typeof AuthenticatedArrearsRoute
   AuthenticatedCalculatorRoute: typeof AuthenticatedCalculatorRoute
-  AuthenticatedCustomersRoute: typeof AuthenticatedCustomersRoute
+  AuthenticatedCustomersRoute: typeof AuthenticatedCustomersRouteWithChildren
   AuthenticatedLoansRoute: typeof AuthenticatedLoansRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedRepaymentsRoute: typeof AuthenticatedRepaymentsRoute
@@ -382,7 +417,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedApplicationsRoute: AuthenticatedApplicationsRoute,
   AuthenticatedArrearsRoute: AuthenticatedArrearsRoute,
   AuthenticatedCalculatorRoute: AuthenticatedCalculatorRoute,
-  AuthenticatedCustomersRoute: AuthenticatedCustomersRoute,
+  AuthenticatedCustomersRoute: AuthenticatedCustomersRouteWithChildren,
   AuthenticatedLoansRoute: AuthenticatedLoansRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedRepaymentsRoute: AuthenticatedRepaymentsRoute,
