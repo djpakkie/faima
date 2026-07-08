@@ -278,7 +278,7 @@ export function CustomerFormDialog({
       return;
     }
     setSaving(true);
-    const payload: Record<string, unknown> = {
+    const payload = {
       full_name: parsed.data.full_name,
       id_number: parsed.data.id_number,
       date_of_birth: parsed.data.date_of_birth || null,
@@ -309,8 +309,11 @@ export function CustomerFormDialog({
       await logAudit("customer.update", { entity: "customer", entity_id: initial.id });
       toast.success("Customer updated.");
     } else {
-      payload.created_by = user?.id ?? null;
-      const { data, error } = await supabase.from("customers").insert(payload).select("id, customer_number").single();
+      const { data, error } = await supabase
+        .from("customers")
+        .insert({ ...payload, created_by: user?.id ?? null })
+        .select("id, customer_number")
+        .single();
       if (error) { toast.error(error.message); setSaving(false); return; }
       await logAudit("customer.create", { entity: "customer", entity_id: data.id, meta: { customer_number: data.customer_number } });
       toast.success(`Customer ${data.customer_number} created.`);
