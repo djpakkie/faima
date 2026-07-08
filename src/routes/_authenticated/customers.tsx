@@ -442,5 +442,3 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
-// silence unused import warning if memoized helpers added later
-export const _memo = useMemo;
