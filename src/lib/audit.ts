@@ -9,12 +9,17 @@ export type AuditAction =
   | "role.revoke"
   | "customer.create"
   | "customer.update"
+  | "customer.delete"
+  | "product.create"
+  | "product.update"
+  | "product.delete"
   | "loan.apply"
   | "loan.approve"
   | "loan.decline"
   | "loan.disburse"
   | "repayment.record"
   | "document.upload"
+  | "document.delete"
   | "report.export";
 
 export async function logAudit(action: AuditAction, opts?: { entity?: string; entity_id?: string; meta?: Record<string, unknown> }) {

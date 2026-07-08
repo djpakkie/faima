@@ -47,6 +47,203 @@ export type Database = {
         }
         Relationships: []
       }
+      customer_documents: {
+        Row: {
+          created_at: string
+          customer_id: string
+          doc_type: string
+          file_name: string
+          file_path: string
+          id: string
+          mime_type: string | null
+          size_bytes: number | null
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          customer_id: string
+          doc_type: string
+          file_name: string
+          file_path: string
+          id?: string
+          mime_type?: string | null
+          size_bytes?: number | null
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string
+          doc_type?: string
+          file_name?: string
+          file_path?: string
+          id?: string
+          mime_type?: string | null
+          size_bytes?: number | null
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_documents_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customers: {
+        Row: {
+          alt_phone: string | null
+          bank_account_number: string | null
+          bank_branch_code: string | null
+          bank_name: string | null
+          created_at: string
+          created_by: string | null
+          customer_number: string
+          date_of_birth: string | null
+          email: string | null
+          employer: string | null
+          employment_status: string | null
+          full_name: string
+          gender: string | null
+          id: string
+          id_number: string
+          marital_status: string | null
+          monthly_income: number | null
+          next_of_kin_name: string | null
+          next_of_kin_phone: string | null
+          next_of_kin_relationship: string | null
+          notes: string | null
+          occupation: string | null
+          phone: string
+          physical_address: string | null
+          postal_address: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          alt_phone?: string | null
+          bank_account_number?: string | null
+          bank_branch_code?: string | null
+          bank_name?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_number?: string
+          date_of_birth?: string | null
+          email?: string | null
+          employer?: string | null
+          employment_status?: string | null
+          full_name: string
+          gender?: string | null
+          id?: string
+          id_number: string
+          marital_status?: string | null
+          monthly_income?: number | null
+          next_of_kin_name?: string | null
+          next_of_kin_phone?: string | null
+          next_of_kin_relationship?: string | null
+          notes?: string | null
+          occupation?: string | null
+          phone: string
+          physical_address?: string | null
+          postal_address?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          alt_phone?: string | null
+          bank_account_number?: string | null
+          bank_branch_code?: string | null
+          bank_name?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_number?: string
+          date_of_birth?: string | null
+          email?: string | null
+          employer?: string | null
+          employment_status?: string | null
+          full_name?: string
+          gender?: string | null
+          id?: string
+          id_number?: string
+          marital_status?: string | null
+          monthly_income?: number | null
+          next_of_kin_name?: string | null
+          next_of_kin_phone?: string | null
+          next_of_kin_relationship?: string | null
+          notes?: string | null
+          occupation?: string | null
+          phone?: string
+          physical_address?: string | null
+          postal_address?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      loan_products: {
+        Row: {
+          active: boolean
+          code: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          insurance_fee_percent: number
+          interest_method: string
+          interest_rate_percent: number
+          late_fee_percent: number
+          max_amount: number
+          max_term_months: number
+          min_amount: number
+          min_term_months: number
+          name: string
+          processing_fee_percent: number
+          repayment_frequency: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          insurance_fee_percent?: number
+          interest_method?: string
+          interest_rate_percent: number
+          late_fee_percent?: number
+          max_amount: number
+          max_term_months: number
+          min_amount: number
+          min_term_months: number
+          name: string
+          processing_fee_percent?: number
+          repayment_frequency?: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          insurance_fee_percent?: number
+          interest_method?: string
+          interest_rate_percent?: number
+          late_fee_percent?: number
+          max_amount?: number
+          max_term_months?: number
+          min_amount?: number
+          min_term_months?: number
+          name?: string
+          processing_fee_percent?: number
+          repayment_frequency?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           active: boolean
@@ -107,6 +304,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      next_customer_number: { Args: never; Returns: string }
     }
     Enums: {
       app_role: "administrator" | "loan_officer" | "finance_officer"
