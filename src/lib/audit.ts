@@ -25,6 +25,6 @@ export async function logAudit(action: AuditAction, opts?: { entity?: string; en
     action,
     entity: opts?.entity ?? null,
     entity_id: opts?.entity_id ?? null,
-    meta: opts?.meta ?? {},
+    meta: (opts?.meta ?? {}) as never,
   });
 }
