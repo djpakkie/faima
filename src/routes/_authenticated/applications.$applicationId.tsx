@@ -88,7 +88,7 @@ function ApplicationDetail() {
 
   const updateStatus = async (patch: Record<string, unknown>, action: string, meta?: Record<string, unknown>) => {
     setBusy(true);
-    const { error } = await supabase.from("loan_applications").update(patch).eq("id", app.id);
+    const { error } = await supabase.from("loan_applications").update(patch as never).eq("id", app.id);
     setBusy(false);
     if (error) { toast.error(error.message); return false; }
     await logAudit(action as never, { entity: "loan_application", entity_id: app.id, meta });
