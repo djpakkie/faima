@@ -14,6 +14,41 @@ export type Database = {
   }
   public: {
     Tables: {
+      arrears_notes: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          follow_up_date: string | null
+          id: string
+          loan_id: string
+          note: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          follow_up_date?: string | null
+          id?: string
+          loan_id: string
+          note: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          follow_up_date?: string | null
+          id?: string
+          loan_id?: string
+          note?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "arrears_notes_loan_id_fkey"
+            columns: ["loan_id"]
+            isOneToOne: false
+            referencedRelation: "loans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_log: {
         Row: {
           action: string
@@ -181,6 +216,108 @@ export type Database = {
         }
         Relationships: []
       }
+      loan_applications: {
+        Row: {
+          affordability_ratio: number | null
+          affordability_verdict: string | null
+          amount: number
+          application_number: string
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string
+          created_by: string | null
+          customer_id: string
+          declined_reason: string | null
+          existing_debt: number | null
+          id: string
+          interest_method: string
+          interest_rate_percent: number
+          monthly_expenses: number | null
+          monthly_income: number | null
+          notes: string | null
+          officer_id: string | null
+          product_id: string
+          purpose: string | null
+          recommended_at: string | null
+          recommended_by: string | null
+          repayment_frequency: string
+          status: string
+          term_months: number
+          updated_at: string
+        }
+        Insert: {
+          affordability_ratio?: number | null
+          affordability_verdict?: string | null
+          amount: number
+          application_number?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_id: string
+          declined_reason?: string | null
+          existing_debt?: number | null
+          id?: string
+          interest_method: string
+          interest_rate_percent: number
+          monthly_expenses?: number | null
+          monthly_income?: number | null
+          notes?: string | null
+          officer_id?: string | null
+          product_id: string
+          purpose?: string | null
+          recommended_at?: string | null
+          recommended_by?: string | null
+          repayment_frequency: string
+          status?: string
+          term_months: number
+          updated_at?: string
+        }
+        Update: {
+          affordability_ratio?: number | null
+          affordability_verdict?: string | null
+          amount?: number
+          application_number?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_id?: string
+          declined_reason?: string | null
+          existing_debt?: number | null
+          id?: string
+          interest_method?: string
+          interest_rate_percent?: number
+          monthly_expenses?: number | null
+          monthly_income?: number | null
+          notes?: string | null
+          officer_id?: string | null
+          product_id?: string
+          purpose?: string | null
+          recommended_at?: string | null
+          recommended_by?: string | null
+          repayment_frequency?: string
+          status?: string
+          term_months?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "loan_applications_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "loan_applications_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "loan_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       loan_products: {
         Row: {
           active: boolean
@@ -244,6 +381,106 @@ export type Database = {
         }
         Relationships: []
       }
+      loans: {
+        Row: {
+          application_id: string
+          closed_at: string | null
+          created_at: string
+          customer_id: string
+          disbursed_at: string
+          disbursed_by: string | null
+          first_due_date: string
+          id: string
+          insurance_fee: number
+          interest_method: string
+          interest_rate_percent: number
+          loan_number: string
+          maturity_date: string
+          outstanding_balance: number
+          principal: number
+          processing_fee: number
+          product_id: string
+          repayment_frequency: string
+          status: string
+          term_months: number
+          total_interest: number
+          total_repayable: number
+          updated_at: string
+        }
+        Insert: {
+          application_id: string
+          closed_at?: string | null
+          created_at?: string
+          customer_id: string
+          disbursed_at: string
+          disbursed_by?: string | null
+          first_due_date: string
+          id?: string
+          insurance_fee?: number
+          interest_method: string
+          interest_rate_percent: number
+          loan_number?: string
+          maturity_date: string
+          outstanding_balance?: number
+          principal: number
+          processing_fee?: number
+          product_id: string
+          repayment_frequency: string
+          status?: string
+          term_months: number
+          total_interest?: number
+          total_repayable?: number
+          updated_at?: string
+        }
+        Update: {
+          application_id?: string
+          closed_at?: string | null
+          created_at?: string
+          customer_id?: string
+          disbursed_at?: string
+          disbursed_by?: string | null
+          first_due_date?: string
+          id?: string
+          insurance_fee?: number
+          interest_method?: string
+          interest_rate_percent?: number
+          loan_number?: string
+          maturity_date?: string
+          outstanding_balance?: number
+          principal?: number
+          processing_fee?: number
+          product_id?: string
+          repayment_frequency?: string
+          status?: string
+          term_months?: number
+          total_interest?: number
+          total_repayable?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "loans_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "loan_applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "loans_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "loans_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "loan_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           active: boolean
@@ -270,6 +507,109 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      repayment_schedule: {
+        Row: {
+          balance_after: number
+          created_at: string
+          due_date: string
+          id: string
+          instalment: number
+          interest: number
+          loan_id: string
+          paid_amount: number
+          paid_at: string | null
+          principal: number
+          seq: number
+          status: string
+        }
+        Insert: {
+          balance_after: number
+          created_at?: string
+          due_date: string
+          id?: string
+          instalment: number
+          interest: number
+          loan_id: string
+          paid_amount?: number
+          paid_at?: string | null
+          principal: number
+          seq: number
+          status?: string
+        }
+        Update: {
+          balance_after?: number
+          created_at?: string
+          due_date?: string
+          id?: string
+          instalment?: number
+          interest?: number
+          loan_id?: string
+          paid_amount?: number
+          paid_at?: string | null
+          principal?: number
+          seq?: number
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "repayment_schedule_loan_id_fkey"
+            columns: ["loan_id"]
+            isOneToOne: false
+            referencedRelation: "loans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      repayments: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          loan_id: string
+          method: string
+          notes: string | null
+          paid_on: string
+          penalty: number
+          receipt_number: string
+          recorded_by: string | null
+          reference: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          loan_id: string
+          method: string
+          notes?: string | null
+          paid_on?: string
+          penalty?: number
+          receipt_number?: string
+          recorded_by?: string | null
+          reference?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          loan_id?: string
+          method?: string
+          notes?: string | null
+          paid_on?: string
+          penalty?: number
+          receipt_number?: string
+          recorded_by?: string | null
+          reference?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "repayments_loan_id_fkey"
+            columns: ["loan_id"]
+            isOneToOne: false
+            referencedRelation: "loans"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
@@ -304,7 +644,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      next_application_number: { Args: never; Returns: string }
       next_customer_number: { Args: never; Returns: string }
+      next_loan_number: { Args: never; Returns: string }
+      next_receipt_number: { Args: never; Returns: string }
     }
     Enums: {
       app_role: "administrator" | "loan_officer" | "finance_officer"
