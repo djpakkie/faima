@@ -26,16 +26,32 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useAuth, type AppRole } from "@/lib/auth-context";
+import { Logo, CoinMark } from "@/components/brand";
 
-type Item = { title: string; url: string; icon: React.ComponentType<{ className?: string }>; roles?: AppRole[] };
+type Item = {
+  title: string;
+  url: string;
+  icon: React.ComponentType<{ className?: string }>;
+  roles?: AppRole[];
+};
 
 const opsItems: Item[] = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Customers", url: "/customers", icon: Users },
   { title: "Loan Applications", url: "/applications", icon: FileText },
   { title: "Loans", url: "/loans", icon: CreditCard },
-  { title: "Repayments", url: "/repayments", icon: CreditCard, roles: ["administrator", "finance_officer", "loan_officer"] },
-  { title: "Arrears", url: "/arrears", icon: AlertTriangle, roles: ["administrator", "finance_officer"] },
+  {
+    title: "Repayments",
+    url: "/repayments",
+    icon: CreditCard,
+    roles: ["administrator", "finance_officer", "loan_officer"],
+  },
+  {
+    title: "Arrears",
+    url: "/arrears",
+    icon: AlertTriangle,
+    roles: ["administrator", "finance_officer"],
+  },
 ];
 
 const toolItems: Item[] = [
@@ -45,7 +61,12 @@ const toolItems: Item[] = [
 ];
 
 const reportItems: Item[] = [
-  { title: "Reports", url: "/reports", icon: BarChart3, roles: ["administrator", "finance_officer"] },
+  {
+    title: "Reports",
+    url: "/reports",
+    icon: BarChart3,
+    roles: ["administrator", "finance_officer"],
+  },
 ];
 
 const adminItems: Item[] = [
@@ -61,8 +82,10 @@ export function AppSidebar() {
   const currentPath = useRouterState({ select: (r) => r.location.pathname });
   const { hasAnyRole, roles } = useAuth();
 
-  const isActive = (path: string) => currentPath === path || (path !== "/" && currentPath.startsWith(path));
-  const canSee = (item: Item) => !item.roles || item.roles.length === 0 || hasAnyRole(item.roles) || roles.length === 0;
+  const isActive = (path: string) =>
+    currentPath === path || (path !== "/" && currentPath.startsWith(path));
+  const canSee = (item: Item) =>
+    !item.roles || item.roles.length === 0 || hasAnyRole(item.roles) || roles.length === 0;
 
   const renderGroup = (label: string, items: Item[]) => {
     const visible = items.filter(canSee);
@@ -92,17 +115,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon" className="border-r">
       <SidebarHeader className="border-b border-sidebar-border">
         <div className="flex items-center gap-2 px-2 py-3">
-          <div className="grid h-8 w-8 shrink-0 place-items-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground font-bold">
-            M
-          </div>
-          {!collapsed && (
-            <div className="min-w-0">
-              <div className="truncate text-sm font-semibold text-sidebar-foreground">MicroFin NA</div>
-              <div className="truncate text-[10px] uppercase tracking-wider text-sidebar-foreground/60">
-                Management System
-              </div>
-            </div>
-          )}
+          {collapsed ? <CoinMark size={28} className="shrink-0" /> : <Logo size="md" />}
         </div>
       </SidebarHeader>
       <SidebarContent>

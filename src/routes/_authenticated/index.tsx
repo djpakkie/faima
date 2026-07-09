@@ -28,7 +28,7 @@ import {
 } from "recharts";
 
 export const Route = createFileRoute("/_authenticated/")({
-  head: () => ({ meta: [{ title: "Dashboard — MicroFin NA" }] }),
+  head: () => ({ meta: [{ title: "Dashboard — Faima Cash Solutions" }] }),
   component: Dashboard,
 });
 
@@ -103,7 +103,7 @@ function Dashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+        <h1 className="text-2xl font-display font-semibold tracking-tight">Dashboard</h1>
         <p className="text-sm text-muted-foreground">Overview of your microfinance portfolio.</p>
       </div>
 

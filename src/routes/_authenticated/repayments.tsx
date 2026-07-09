@@ -47,7 +47,7 @@ import { CreditCard, Download, Loader2, Plus, Search, Check, ChevronsUpDown } fr
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/repayments")({
-  head: () => ({ meta: [{ title: "Repayments — MicroFin NA" }] }),
+  head: () => ({ meta: [{ title: "Repayments — Faima Cash Solutions" }] }),
   component: RepaymentsPage,
 });
 
@@ -171,7 +171,7 @@ function RepaymentsPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl font-display font-semibold tracking-tight flex items-center gap-2">
             <CreditCard className="h-6 w-6 text-primary" /> Repayments
           </h1>
           <p className="text-sm text-muted-foreground">Record payments and issue receipts.</p>

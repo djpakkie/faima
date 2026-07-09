@@ -13,7 +13,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Calculator, Download } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/calculator")({
-  head: () => ({ meta: [{ title: "Loan calculator — MicroFin NA" }] }),
+  head: () => ({ meta: [{ title: "Loan calculator — Faima Cash Solutions" }] }),
   component: CalculatorPage,
 });
 
@@ -93,7 +93,7 @@ function CalculatorPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+        <h1 className="text-2xl font-display font-semibold tracking-tight flex items-center gap-2">
           <Calculator className="h-6 w-6 text-primary" /> Loan calculator
         </h1>
         <p className="text-sm text-muted-foreground">

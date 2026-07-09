@@ -11,7 +11,7 @@ import { useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/reset-password")({
   ssr: false,
-  head: () => ({ meta: [{ title: "Reset password — MicroFin NA" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Reset password — Faima Cash Solutions" }, { name: "robots", content: "noindex" }] }),
   component: ResetPasswordPage,
 });
 

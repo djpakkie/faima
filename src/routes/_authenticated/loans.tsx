@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Banknote, Loader2, Search } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/loans")({
-  head: () => ({ meta: [{ title: "Loans — MicroFin NA" }] }),
+  head: () => ({ meta: [{ title: "Loans — Faima Cash Solutions" }] }),
   component: LoansPage,
 });
 
@@ -71,7 +71,7 @@ function LoansPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2"><Banknote className="h-6 w-6 text-primary" /> Loans</h1>
+        <h1 className="text-2xl font-display font-semibold tracking-tight flex items-center gap-2"><Banknote className="h-6 w-6 text-primary" /> Loans</h1>
         <p className="text-sm text-muted-foreground">All disbursed loans and their outstanding balances.</p>
       </div>
 

@@ -31,7 +31,7 @@ export const Route = createFileRoute("/_authenticated/admin/products")({
       .maybeSingle();
     if (!r) throw redirect({ to: "/" });
   },
-  head: () => ({ meta: [{ title: "Loan products — MicroFin NA" }] }),
+  head: () => ({ meta: [{ title: "Loan products — Faima Cash Solutions" }] }),
   component: ProductsAdmin,
 });
 
@@ -89,7 +89,7 @@ function ProductsAdmin() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl font-display font-semibold tracking-tight flex items-center gap-2">
             <Package className="h-6 w-6 text-primary" /> Loan products
           </h1>
           <p className="text-sm text-muted-foreground">Configure loan products, interest rates, terms and fees.</p>

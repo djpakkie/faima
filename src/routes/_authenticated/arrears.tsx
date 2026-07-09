@@ -36,7 +36,7 @@ import {
 import { AlertTriangle, Loader2, MessageSquarePlus, Phone, Search } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/arrears")({
-  head: () => ({ meta: [{ title: "Arrears — MicroFin NA" }] }),
+  head: () => ({ meta: [{ title: "Arrears — Faima Cash Solutions" }] }),
   component: ArrearsPage,
 });
 
@@ -181,7 +181,7 @@ function ArrearsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+        <h1 className="text-2xl font-display font-semibold tracking-tight flex items-center gap-2">
           <AlertTriangle className="h-6 w-6 text-primary" /> Arrears
         </h1>
         <p className="text-sm text-muted-foreground">

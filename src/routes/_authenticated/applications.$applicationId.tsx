@@ -18,7 +18,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { ArrowLeft, CheckCircle2, XCircle, Send, Download, Banknote, Loader2, ThumbsUp } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/applications/$applicationId")({
-  head: () => ({ meta: [{ title: "Application — MicroFin NA" }] }),
+  head: () => ({ meta: [{ title: "Application — Faima Cash Solutions" }] }),
   component: ApplicationDetail,
 });
 
@@ -187,7 +187,7 @@ function ApplicationDetail() {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <Link to="/applications"><Button variant="ghost" size="sm" className="mb-2"><ArrowLeft className="h-4 w-4 mr-1" /> Back</Button></Link>
-          <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl font-display font-semibold tracking-tight flex items-center gap-2">
             {app.application_number}
             <Badge variant="outline" className="uppercase">{app.status.replace(/_/g, " ")}</Badge>
           </h1>

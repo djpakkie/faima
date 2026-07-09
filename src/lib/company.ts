@@ -1,6 +1,9 @@
 // Central company details used across receipts, statements, and reports.
 export const COMPANY = {
   name: "FAIMA CASH SOLUTIONS CC",
+  brandName: "Faima Cash Solutions",
+  shortName: "Faima",
+  tagline: "Cash Solutions",
   registrationNumber: "CC/2026/06672",
   bank: {
     name: "First National Bank Namibia",

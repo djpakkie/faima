@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Scale, CheckCircle2, AlertTriangle, XCircle } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/affordability")({
-  head: () => ({ meta: [{ title: "Affordability calculator — MicroFin NA" }] }),
+  head: () => ({ meta: [{ title: "Affordability calculator — Faima Cash Solutions" }] }),
   component: AffordabilityPage,
 });
 
@@ -64,7 +64,7 @@ function AffordabilityPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+        <h1 className="text-2xl font-display font-semibold tracking-tight flex items-center gap-2">
           <Scale className="h-6 w-6 text-primary" /> Affordability calculator
         </h1>
         <p className="text-sm text-muted-foreground">Assess debt-to-income and disposable income for a proposed loan.</p>

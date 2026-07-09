@@ -20,7 +20,7 @@ export const Route = createFileRoute("/_authenticated/admin/audit")({
       .maybeSingle();
     if (!r) throw redirect({ to: "/" });
   },
-  head: () => ({ meta: [{ title: "Audit log — MicroFin NA" }] }),
+  head: () => ({ meta: [{ title: "Audit log — Faima Cash Solutions" }] }),
   component: AuditLogPage,
 });
 
@@ -64,7 +64,7 @@ function AuditLogPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Audit log</h1>
+        <h1 className="text-2xl font-display font-semibold tracking-tight">Audit log</h1>
         <p className="text-sm text-muted-foreground">All security-relevant actions performed by staff.</p>
       </div>
       <Card>

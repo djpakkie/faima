@@ -13,6 +13,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { logAudit } from "@/lib/audit";
+import { CoinMark } from "@/components/brand";
+import { COMPANY } from "@/lib/company";
 
 export function TopBar() {
   const { theme, toggle } = useTheme();
@@ -35,6 +37,12 @@ export function TopBar() {
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b bg-card/80 backdrop-blur px-3 sm:px-4">
       <SidebarTrigger />
+      <div className="flex items-center gap-2 sm:hidden">
+        <CoinMark size={22} />
+        <span className="font-display font-semibold text-sm text-foreground">
+          {COMPANY.shortName}
+        </span>
+      </div>
       <div className="flex-1" />
       <Button variant="ghost" size="icon" onClick={toggle} aria-label="Toggle theme">
         {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
@@ -63,7 +71,10 @@ export function TopBar() {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleSignOut} className="text-destructive focus:text-destructive">
+          <DropdownMenuItem
+            onClick={handleSignOut}
+            className="text-destructive focus:text-destructive"
+          >
             <LogOut className="mr-2 h-4 w-4" /> Sign out
           </DropdownMenuItem>
         </DropdownMenuContent>

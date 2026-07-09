@@ -17,7 +17,7 @@ import { ArrowLeft, Download, Loader2, Pencil, Trash2, Upload, FileText } from "
 import { CustomerFormDialog } from "./customers";
 
 export const Route = createFileRoute("/_authenticated/customers/$customerId")({
-  head: () => ({ meta: [{ title: "Customer — MicroFin NA" }] }),
+  head: () => ({ meta: [{ title: "Customer — Faima Cash Solutions" }] }),
   component: CustomerDetail,
 });
 
@@ -110,7 +110,7 @@ function CustomerDetail() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-1">
           <Link to="/customers" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Customers</Link>
-          <h1 className="text-2xl font-bold tracking-tight">{customer.full_name}</h1>
+          <h1 className="text-2xl font-display font-semibold tracking-tight">{customer.full_name}</h1>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span className="font-mono text-xs">{customer.customer_number}</span>
             <span>•</span>

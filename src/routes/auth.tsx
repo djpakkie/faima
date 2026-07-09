@@ -11,6 +11,8 @@ import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { logAudit } from "@/lib/audit";
 import { Loader2 } from "lucide-react";
+import { Logo } from "@/components/brand";
+import { COMPANY } from "@/lib/company";
 
 const searchSchema = z.object({
   mode: z.enum(["signin", "signup", "reset"]).optional(),
@@ -22,8 +24,11 @@ export const Route = createFileRoute("/auth")({
   validateSearch: searchSchema,
   head: () => ({
     meta: [
-      { title: "Sign in — MicroFin NA" },
-      { name: "description", content: "Staff sign-in for the internal microfinance management system." },
+      { title: `Sign in — ${COMPANY.brandName}` },
+      {
+        name: "description",
+        content: "Staff sign-in for the internal microfinance management system.",
+      },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
@@ -44,23 +49,14 @@ function AuthPage() {
   return (
     <div className="min-h-screen grid lg:grid-cols-2 bg-background">
       <div className="hidden lg:flex flex-col justify-between p-10 bg-sidebar text-sidebar-foreground">
-        <div className="flex items-center gap-3">
-          <div className="grid h-10 w-10 place-items-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground font-bold text-lg">
-            M
-          </div>
-          <div>
-            <div className="text-lg font-semibold">MicroFin NA</div>
-            <div className="text-xs uppercase tracking-wider text-sidebar-foreground/60">
-              Management System
-            </div>
-          </div>
-        </div>
+        <Logo size="lg" />
         <div className="space-y-4 max-w-md">
-          <h1 className="text-3xl font-bold leading-tight">
+          <h1 className="font-display text-3xl font-semibold leading-tight">
             Namibia&apos;s internal microfinance operations, streamlined.
           </h1>
           <p className="text-sidebar-foreground/70">
-            Customer onboarding, loan origination, repayments and arrears management — all in one secure workspace.
+            Customer onboarding, loan origination, repayments and arrears management — all in one
+            secure workspace.
           </p>
         </div>
         <div className="text-xs text-sidebar-foreground/60">
@@ -86,8 +82,8 @@ function AuthPage() {
               <TabsContent value="signup">
                 <SignUpForm />
                 <p className="mt-4 text-xs text-muted-foreground">
-                  The first account you create becomes the system administrator. Additional staff accounts should be
-                  created by an admin.
+                  The first account you create becomes the system administrator. Additional staff
+                  accounts should be created by an admin.
                 </p>
               </TabsContent>
               <TabsContent value="reset">
@@ -127,11 +123,25 @@ function SignInForm({ redirect }: { redirect?: string }) {
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
-        <Input id="email" type="email" required autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Input
+          id="email"
+          type="email"
+          required
+          autoComplete="username"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
       </div>
       <div className="space-y-2">
         <Label htmlFor="password">Password</Label>
-        <Input id="password" type="password" required autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <Input
+          id="password"
+          type="password"
+          required
+          autoComplete="current-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
       </div>
       <Button type="submit" className="w-full" disabled={loading}>
         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Sign in
@@ -175,15 +185,33 @@ function SignUpForm() {
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="fullName">Full name</Label>
-        <Input id="fullName" required value={fullName} onChange={(e) => setFullName(e.target.value)} />
+        <Input
+          id="fullName"
+          required
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+        />
       </div>
       <div className="space-y-2">
         <Label htmlFor="signup-email">Email</Label>
-        <Input id="signup-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Input
+          id="signup-email"
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
       </div>
       <div className="space-y-2">
         <Label htmlFor="signup-password">Password</Label>
-        <Input id="signup-password" type="password" required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} />
+        <Input
+          id="signup-password"
+          type="password"
+          required
+          minLength={8}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <p className="text-xs text-muted-foreground">At least 8 characters.</p>
       </div>
       <Button type="submit" className="w-full" disabled={loading}>
@@ -215,7 +243,13 @@ function ResetForm() {
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="reset-email">Email</Label>
-        <Input id="reset-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Input
+          id="reset-email"
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
       </div>
       <Button type="submit" className="w-full" disabled={loading}>
         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Send reset link
