@@ -18,12 +18,18 @@ export type AuditAction =
   | "loan.decline"
   | "loan.disburse"
   | "repayment.record"
+  | "arrears.note"
   | "document.upload"
   | "document.delete"
   | "report.export";
 
-export async function logAudit(action: AuditAction, opts?: { entity?: string; entity_id?: string; meta?: Record<string, unknown> }) {
-  const { data: { user } } = await supabase.auth.getUser();
+export async function logAudit(
+  action: AuditAction,
+  opts?: { entity?: string; entity_id?: string; meta?: Record<string, unknown> },
+) {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) return;
   await supabase.from("audit_log").insert({
     user_id: user.id,
