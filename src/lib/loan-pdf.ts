@@ -63,7 +63,6 @@ export function generateSchedulePdf(meta: SchedulePdfMeta, schedule: ScheduleRes
   });
 
   autoTable(doc, {
-    // @ts-expect-error autotable augments doc
     startY: (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 16,
     head: [["#", "Due date", "Principal", "Interest", "Instalment", "Balance"]],
     body: schedule.rows.map((r) => [

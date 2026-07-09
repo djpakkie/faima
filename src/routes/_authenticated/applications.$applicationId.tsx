@@ -86,7 +86,7 @@ function ApplicationDetail() {
     startDate: new Date(),
   });
 
-  const updateStatus = async (patch: Partial<App>, action: string, meta?: Record<string, unknown>) => {
+  const updateStatus = async (patch: Record<string, unknown>, action: string, meta?: Record<string, unknown>) => {
     setBusy(true);
     const { error } = await supabase.from("loan_applications").update(patch).eq("id", app.id);
     setBusy(false);
