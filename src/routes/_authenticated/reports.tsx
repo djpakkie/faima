@@ -462,11 +462,11 @@ async function buildApplications({ from, to, statusFilter }: ReportOpts) {
   let q = supabase
     .from("loan_applications")
     .select(
-      "application_number, amount, term_months, interest_rate_percent, status, applied_at, customers(full_name, customer_number), loan_products(name)",
+      "application_number, amount, term_months, interest_rate_percent, status, created_at, customers(full_name, customer_number), loan_products(name)",
     )
-    .gte("applied_at", `${from}T00:00:00`)
-    .lte("applied_at", `${to}T23:59:59`)
-    .order("applied_at", { ascending: false });
+    .gte("created_at", `${from}T00:00:00`)
+    .lte("created_at", `${to}T23:59:59`)
+    .order("created_at", { ascending: false });
   if (statusFilter !== "all") q = q.eq("status", statusFilter);
   const { data, error } = await q;
   if (error) throw error;
@@ -476,7 +476,7 @@ async function buildApplications({ from, to, statusFilter }: ReportOpts) {
     term_months: number;
     interest_rate_percent: number;
     status: string;
-    applied_at: string;
+    created_at: string;
     customers: { full_name: string; customer_number: string } | null;
     loan_products: { name: string } | null;
   }>;
@@ -508,7 +508,7 @@ async function buildApplications({ from, to, statusFilter }: ReportOpts) {
     ],
     rows: rows.map((r) => [
       r.application_number,
-      formatDate(r.applied_at),
+      formatDate(r.created_at),
       `${r.customers?.full_name ?? "—"}\n${r.customers?.customer_number ?? ""}`,
       r.loan_products?.name ?? "—",
       formatNAD(Number(r.amount)),
