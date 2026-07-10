@@ -464,7 +464,7 @@ function RecordPaymentDialog({
       meta: { receipt_number: receipt.receipt_number, amount: amt, penalty: pen },
     });
 
-    const doc = generateReceiptPdf({
+    const doc = await generateReceiptPdf({
       receiptNumber: receipt.receipt_number,
       paidOn,
       loanNumber: selectedLoan.loan_number,
