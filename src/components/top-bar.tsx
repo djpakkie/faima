@@ -37,10 +37,14 @@ export function TopBar() {
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b bg-card/80 backdrop-blur px-3 sm:px-4">
       <SidebarTrigger />
-      <div className="flex items-center gap-2 sm:hidden">
+      <div className="flex items-center gap-2">
         <CoinMark size={22} />
-        <span className="font-display font-semibold text-sm text-foreground">
+        <span className="font-display font-semibold text-sm text-foreground tracking-tight">
           {COMPANY.shortName}
+          <span className="hidden sm:inline text-muted-foreground font-medium">
+            {" "}
+            · {COMPANY.tagline}
+          </span>
         </span>
       </div>
       <div className="flex-1" />

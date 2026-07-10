@@ -47,6 +47,78 @@ export function CoinMark({ size = 36, className }: { size?: number; className?: 
   );
 }
 
+/**
+ * Hero masthead for the dashboard — the redesign's signature element.
+ * A dark vault-plum banner with a concentric coin-ring watermark bleeding
+ * off the edge, carrying the full brand name at real weight instead of
+ * a small lockup tucked into a corner.
+ */
+export function BrandMasthead({ className }: { className?: string }) {
+  const today = new Date().toLocaleDateString("en-NA", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+  return (
+    <div
+      className={cn(
+        "relative overflow-hidden rounded-2xl bg-sidebar text-sidebar-foreground shadow-[var(--shadow-elev)]",
+        className,
+      )}
+    >
+      <svg
+        viewBox="0 0 400 200"
+        preserveAspectRatio="xMaxYMid slice"
+        className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.16]"
+        aria-hidden="true"
+      >
+        <circle
+          cx="360"
+          cy="100"
+          r="150"
+          fill="none"
+          stroke="var(--brand-gold)"
+          strokeWidth="1.5"
+        />
+        <circle
+          cx="360"
+          cy="100"
+          r="110"
+          fill="none"
+          stroke="var(--brand-gold)"
+          strokeWidth="1.5"
+        />
+        <circle cx="360" cy="100" r="70" fill="none" stroke="var(--brand-gold)" strokeWidth="1.5" />
+        <circle cx="360" cy="100" r="30" fill="var(--brand-gold)" />
+      </svg>
+
+      <div className="relative z-10 flex flex-col gap-4 px-6 py-6 sm:flex-row sm:items-end sm:justify-between sm:px-8 sm:py-7">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.2em] text-sidebar-foreground/55">
+            <span className="inline-block h-1 w-1 rounded-full bg-brand-gold" />
+            Microfinance operations
+          </div>
+          <div className="mt-2 flex items-center gap-3">
+            <CoinMark size={40} className="shrink-0" />
+            <h1 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+              {COMPANY.brandName}
+            </h1>
+          </div>
+          <p className="mt-1.5 text-sm text-sidebar-foreground/65">
+            {COMPANY.tagline} · Reg. {COMPANY.registrationNumber}
+          </p>
+        </div>
+        <div className="text-left sm:text-right">
+          <p className="text-xs uppercase tracking-wider text-sidebar-foreground/50">Today</p>
+          <p className="font-display text-sm font-medium text-sidebar-foreground/90">{today}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function Logo({
   size = "md",
   showTagline = true,
