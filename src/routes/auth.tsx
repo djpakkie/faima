@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { logAudit } from "@/lib/audit";
 import { Loader2 } from "lucide-react";
-import { Logo } from "@/components/brand";
+import { CoinMark, FullLogo } from "@/components/brand";
 import { COMPANY } from "@/lib/company";
 
 const searchSchema = z.object({
@@ -49,7 +49,7 @@ function AuthPage() {
   return (
     <div className="min-h-screen grid lg:grid-cols-2 bg-background">
       <div className="hidden lg:flex flex-col justify-between p-10 bg-sidebar text-sidebar-foreground">
-        <Logo size="lg" />
+        <FullLogo className="w-64" />
         <div className="space-y-4 max-w-md">
           <h1 className="font-display text-3xl font-semibold leading-tight">
             Namibia&apos;s internal microfinance operations, streamlined.
@@ -63,7 +63,16 @@ function AuthPage() {
           For authorised staff only. All actions are logged.
         </div>
       </div>
-      <div className="flex items-center justify-center p-6">
+      <div className="flex flex-col items-center justify-center gap-6 p-6">
+        <div className="flex lg:hidden items-center gap-2.5">
+          <CoinMark size={40} />
+          <div className="leading-tight">
+            <div className="font-display font-semibold text-lg text-foreground">Faima</div>
+            <div className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+              Fast. Flexible. Reliable.
+            </div>
+          </div>
+        </div>
         <Card className="w-full max-w-md shadow-[var(--shadow-elev)]">
           <CardHeader>
             <CardTitle>Staff sign-in</CardTitle>

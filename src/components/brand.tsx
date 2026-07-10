@@ -3,8 +3,10 @@ import { cn } from "@/lib/utils";
 
 /**
  * Faima Cash Solutions brand mark.
- * The badge is a coin motif — a nod to "cash" — with a notched F.
- * Use sparingly: sidebar header and the sign-in screen are its two homes.
+ * CoinMark is the "FC" monogram cropped from the official logo artwork.
+ * FullLogo is the official wide lockup, for the sign-in screen and other
+ * large brand moments. Logo is the compact text lockup used in the
+ * sidebar header and top bar.
  */
 
 const SIZES = {
@@ -15,43 +17,31 @@ const SIZES = {
 
 export function CoinMark({ size = 36, className }: { size?: number; className?: string }) {
   return (
-    <svg
-      viewBox="0 0 40 40"
+    <img
+      src="/brand/faima-mark-256.png"
       width={size}
       height={size}
-      className={className}
-      role="img"
-      aria-label={`${COMPANY.brandName} mark`}
-    >
-      <circle cx="20" cy="20" r="19" fill="var(--brand-gold)" />
-      <circle
-        cx="20"
-        cy="20"
-        r="19"
-        fill="none"
-        stroke="var(--brand-gold-dark)"
-        strokeWidth="1"
-        opacity="0.4"
-      />
-      <circle
-        cx="20"
-        cy="20"
-        r="15"
-        fill="none"
-        stroke="var(--sidebar)"
-        strokeOpacity="0.35"
-        strokeWidth="1"
-      />
-      <path d="M14.5 12.5H26.5V16H18.5V19H25V22.5H18.5V27.5H14.5V12.5Z" fill="var(--sidebar)" />
-    </svg>
+      className={cn("shrink-0 rounded-full object-cover", className)}
+      alt={`${COMPANY.brandName} mark`}
+    />
+  );
+}
+
+export function FullLogo({ className }: { className?: string }) {
+  return (
+    <img
+      src="/brand/faima-logo-full.jpeg"
+      className={cn("w-full max-w-md rounded-xl", className)}
+      alt={`${COMPANY.brandName} — ${COMPANY.tagline}`}
+    />
   );
 }
 
 /**
  * Hero masthead for the dashboard — the redesign's signature element.
- * A dark vault-plum banner with a concentric coin-ring watermark bleeding
- * off the edge, carrying the full brand name at real weight instead of
- * a small lockup tucked into a corner.
+ * A deep navy banner (matching the logo's own background) with a
+ * concentric coin-ring watermark bleeding off the edge, carrying the
+ * full brand name at real weight instead of a small lockup in a corner.
  */
 export function BrandMasthead({ className }: { className?: string }) {
   const today = new Date().toLocaleDateString("en-NA", {

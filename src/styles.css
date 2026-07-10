@@ -5,15 +5,14 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Faima Cash Solutions — Design System v2
+ * Faima Cash Solutions — Design System v3
  *
- * Signature: "Vault & Coin" — a deep aubergine-plum vault set against a
- * warm brass coin accent. Plum reads as premium and trustworthy without
- * borrowing the generic navy-blue or terracotta-cream fintech defaults;
- * brass keeps the literal "cash" association from the coin wordmark.
- * Space Grotesk gives headings and the wordmark a confident, geometric
- * voice; Inter stays on body copy and dense data; JetBrains Mono marks
- * loan, receipt and customer numbers as ledger-grade data.
+ * Signature: "Vault & Coin" — matched to the real brand mark: a deep
+ * navy vault (sampled from the logo's background) with an antique-gold
+ * coin accent (sampled from the logo's ring and wordmark). Space
+ * Grotesk carries the wordmark's confident, geometric voice; Inter
+ * stays on body copy and dense data; JetBrains Mono marks loan,
+ * receipt and customer numbers as ledger-grade data.
  */
 
 @theme inline {
@@ -68,126 +67,126 @@
   --font-display: "Space Grotesk", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
-  --shadow-card: 0 1px 2px 0 oklch(0.2 0.06 320 / 0.05), 0 1px 3px 0 oklch(0.2 0.06 320 / 0.07);
-  --shadow-elev: 0 4px 14px -2px oklch(0.2 0.06 320 / 0.1), 0 2px 6px -1px oklch(0.2 0.06 320 / 0.07);
+  --shadow-card: 0 1px 2px 0 oklch(0.2 0.05 250 / 0.05), 0 1px 3px 0 oklch(0.2 0.05 250 / 0.07);
+  --shadow-elev: 0 4px 14px -2px oklch(0.2 0.05 250 / 0.12), 0 2px 6px -1px oklch(0.2 0.05 250 / 0.08);
 }
 
 :root {
   --radius: 0.75rem;
 
-  /* Signature accent: antique brass — the literal colour of the coin mark.
-     Used sparingly — active states, the brand mark, focus rings — never
-     as a full-surface colour. */
-  --brand-gold: #c9982f;
-  --brand-gold-dark: #9c7524;
+  /* Signature accent: antique gold, sampled directly from the logo's
+     coin ring and wordmark accents. Used sparingly — active states,
+     the brand mark, focus rings — never as a full-surface colour. */
+  --brand-gold: #d2a448;
+  --brand-gold-dark: #a97f2e;
 
-  --background: #fbf6ee;
-  --foreground: #241726;
+  --background: #f5f7fa;
+  --foreground: #10152b;
 
   --card: #ffffff;
-  --card-foreground: #241726;
+  --card-foreground: #10152b;
   --popover: #ffffff;
-  --popover-foreground: #241726;
+  --popover-foreground: #10152b;
 
-  /* Deep aubergine-plum — the vault, not a SaaS-default navy. */
-  --primary: #4a2545;
-  --primary-foreground: #fbf6ee;
+  /* Deep navy — sampled directly from the logo's background. */
+  --primary: #0e2452;
+  --primary-foreground: #ffffff;
 
-  --secondary: #efe5ea;
-  --secondary-foreground: #4a2545;
+  --secondary: #e7eaf1;
+  --secondary-foreground: #0e2452;
 
-  --muted: #f1ebe1;
-  --muted-foreground: #6e6470;
+  --muted: #eef0f4;
+  --muted-foreground: #5c6478;
 
-  --accent: #f6e9c9;
+  --accent: #fbf0d6;
   --accent-foreground: #4a3510;
 
-  --destructive: #a8362b;
-  --destructive-foreground: #fbf6ee;
+  --destructive: #b0342a;
+  --destructive-foreground: #ffffff;
 
-  --success: #1f6f5c;
-  --success-foreground: #fbf6ee;
+  --success: #1a7a5e;
+  --success-foreground: #ffffff;
 
-  --warning: #c9982f;
+  --warning: #d2a448;
   --warning-foreground: #2a1f0d;
 
   --info: #3e6fa5;
-  --info-foreground: #fbf6ee;
+  --info-foreground: #ffffff;
 
-  --border: #e5dccf;
-  --input: #e9e0d2;
-  --ring: #c9982f;
+  --border: #e1e4ea;
+  --input: #e6e9f0;
+  --ring: #d2a448;
 
-  --chart-1: #4a2545;
-  --chart-2: #1f6f5c;
-  --chart-3: #c9982f;
-  --chart-4: #a8362b;
+  --chart-1: #0e2452;
+  --chart-2: #1a7a5e;
+  --chart-3: #d2a448;
+  --chart-4: #b0342a;
   --chart-5: #3e6fa5;
 
-  --sidebar: #1c0f1e;
-  --sidebar-foreground: #f1e9e3;
-  --sidebar-primary: #c9982f;
-  --sidebar-primary-foreground: #1c0f1e;
-  --sidebar-accent: #2a1a2c;
-  --sidebar-accent-foreground: #f6ecd6;
-  --sidebar-border: #33223a;
-  --sidebar-ring: #c9982f;
+  --sidebar: #000e30;
+  --sidebar-foreground: #eef1f7;
+  --sidebar-primary: #d2a448;
+  --sidebar-primary-foreground: #000e30;
+  --sidebar-accent: #0a1d45;
+  --sidebar-accent-foreground: #f7ecd2;
+  --sidebar-border: #142a55;
+  --sidebar-ring: #d2a448;
 }
 
 .dark {
-  --brand-gold: #d9a24e;
-  --brand-gold-dark: #c9982f;
+  --brand-gold: #dcb15c;
+  --brand-gold-dark: #b98f3a;
 
-  --background: #150a17;
-  --foreground: #f0e7ea;
+  --background: #060b18;
+  --foreground: #eef1f7;
 
-  --card: #201220;
-  --card-foreground: #f0e7ea;
-  --popover: #201220;
-  --popover-foreground: #f0e7ea;
+  --card: #0c1730;
+  --card-foreground: #eef1f7;
+  --popover: #0c1730;
+  --popover-foreground: #eef1f7;
 
-  --primary: #ba90c5;
-  --primary-foreground: #150a17;
+  --primary: #dcb15c;
+  --primary-foreground: #10152b;
 
-  --secondary: #241628;
-  --secondary-foreground: #f0e7ea;
+  --secondary: #12203f;
+  --secondary-foreground: #eef1f7;
 
-  --muted: #221426;
-  --muted-foreground: #a8969f;
+  --muted: #101c38;
+  --muted-foreground: #93a0bd;
 
-  --accent: #2e1f1a;
+  --accent: #241c10;
   --accent-foreground: #e9c97a;
 
   --destructive: #d9695d;
-  --destructive-foreground: #150a17;
+  --destructive-foreground: #10152b;
 
   --success: #4fae85;
-  --success-foreground: #150a17;
+  --success-foreground: #10152b;
 
-  --warning: #d9a24e;
-  --warning-foreground: #150a17;
+  --warning: #dcb15c;
+  --warning-foreground: #10152b;
 
   --info: #6fa0d8;
-  --info-foreground: #150a17;
+  --info-foreground: #10152b;
 
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: #d9a24e;
+  --ring: #dcb15c;
 
-  --chart-1: #ba90c5;
+  --chart-1: #8fa8d8;
   --chart-2: #4fae85;
-  --chart-3: #d9a24e;
+  --chart-3: #dcb15c;
   --chart-4: #d98a7d;
-  --chart-5: #8fadd8;
+  --chart-5: #b7c6e6;
 
-  --sidebar: #0c0710;
-  --sidebar-foreground: #f1e9e3;
-  --sidebar-primary: #d9a24e;
-  --sidebar-primary-foreground: #0c0710;
-  --sidebar-accent: #1c1020;
-  --sidebar-accent-foreground: #f6ecd6;
+  --sidebar: #000a24;
+  --sidebar-foreground: #eef1f7;
+  --sidebar-primary: #dcb15c;
+  --sidebar-primary-foreground: #000a24;
+  --sidebar-accent: #0a1830;
+  --sidebar-accent-foreground: #f7ecd2;
   --sidebar-border: oklch(1 0 0 / 8%);
-  --sidebar-ring: #d9a24e;
+  --sidebar-ring: #dcb15c;
 }
 
 @layer base {
