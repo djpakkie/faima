@@ -1,7 +1,7 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { COMPANY } from "./company";
 import { formatNAD, formatDate, formatDateTime } from "./format";
+import { drawDocumentFooter, drawDocumentHeader, loadCompanyLogo } from "./pdf-header";
 
 export interface ReceiptPdfMeta {
   receiptNumber: string;
@@ -19,30 +19,18 @@ export interface ReceiptPdfMeta {
   recordedByEmail?: string | null;
 }
 
-export function generateReceiptPdf(meta: ReceiptPdfMeta): jsPDF {
+export async function generateReceiptPdf(meta: ReceiptPdfMeta): Promise<jsPDF> {
   const doc = new jsPDF({ unit: "pt", format: "a5" });
   const pageWidth = doc.internal.pageSize.getWidth();
-  let y = 40;
+  const logo = await loadCompanyLogo();
 
-  doc.setFontSize(15).setFont("helvetica", "bold");
-  doc.text(COMPANY.name, 32, y);
-  doc.setFontSize(8).setFont("helvetica", "normal");
-  doc.text(`Reg: ${COMPANY.registrationNumber}`, 32, y + 13);
-  doc.text(
-    `Bank: ${COMPANY.bank.name}, ${COMPANY.bank.branchName} (${COMPANY.bank.branchCode})`,
-    32,
-    y + 24,
-  );
-
-  doc.setFontSize(13).setFont("helvetica", "bold");
-  doc.text("PAYMENT RECEIPT", pageWidth - 32, y, { align: "right" });
-  doc.setFontSize(9).setFont("helvetica", "normal");
-  doc.text(meta.receiptNumber, pageWidth - 32, y + 14, { align: "right" });
-  doc.text(formatDate(meta.paidOn), pageWidth - 32, y + 26, { align: "right" });
-
-  y += 50;
-  doc.setDrawColor(220).line(32, y, pageWidth - 32, y);
-  y += 20;
+  let y = drawDocumentHeader(doc, {
+    title: "PAYMENT RECEIPT",
+    subtitle: `${meta.receiptNumber} · ${formatDate(meta.paidOn)}`,
+    logoDataUrl: logo,
+    marginX: 32,
+    logoSize: 36,
+  });
 
   const rows: Array<[string, string]> = [
     ["Customer", `${meta.customerName} (${meta.customerNumber})`],
@@ -58,9 +46,10 @@ export function generateReceiptPdf(meta: ReceiptPdfMeta): jsPDF {
   autoTable(doc, {
     startY: y,
     theme: "plain",
+    margin: { left: 32, right: 32 },
     styles: { fontSize: 9, cellPadding: 4 },
     body: rows,
-    columnStyles: { 0: { fontStyle: "bold", cellWidth: 120 }, 1: { cellWidth: 260 } },
+    columnStyles: { 0: { fontStyle: "bold", cellWidth: 120 }, 1: { cellWidth: 240 } },
   });
 
   let finalY = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 10;
@@ -74,17 +63,16 @@ export function generateReceiptPdf(meta: ReceiptPdfMeta): jsPDF {
     finalY += 28 + lines.length * 11;
   }
 
-  finalY += 24;
-  doc.setDrawColor(220).line(32, finalY, pageWidth - 32, finalY);
-  finalY += 16;
+  finalY += 20;
   doc.setFontSize(8).setFont("helvetica", "normal").setTextColor(120);
   doc.text(
-    `Recorded by ${meta.recordedByEmail ?? "—"} · Generated ${formatDateTime(new Date())}`,
+    `Recorded by ${meta.recordedByEmail ?? "—"} · ${formatDateTime(new Date())}`,
     32,
     finalY,
   );
-  doc.text(`${COMPANY.name} · This receipt is computer-generated.`, 32, finalY + 12);
+  doc.text("This receipt is computer-generated.", 32, finalY + 11);
   doc.setTextColor(0);
 
+  drawDocumentFooter(doc, 32);
   return doc;
 }
