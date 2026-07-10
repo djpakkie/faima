@@ -148,8 +148,8 @@ function RepaymentsPage() {
     };
   }, [rows]);
 
-  const downloadReceipt = (r: Repayment) => {
-    const doc = generateReceiptPdf({
+  const downloadReceipt = async (r: Repayment) => {
+    const doc = await generateReceiptPdf({
       receiptNumber: r.receipt_number,
       paidOn: r.paid_on,
       loanNumber: r.loans?.loan_number ?? "—",
@@ -464,7 +464,7 @@ function RecordPaymentDialog({
       meta: { receipt_number: receipt.receipt_number, amount: amt, penalty: pen },
     });
 
-    const doc = generateReceiptPdf({
+    const doc = await generateReceiptPdf({
       receiptNumber: receipt.receipt_number,
       paidOn,
       loanNumber: selectedLoan.loan_number,

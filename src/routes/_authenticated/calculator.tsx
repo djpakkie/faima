@@ -71,9 +71,9 @@ function CalculatorPage() {
 
   const product = products.find((p) => p.id === productId);
 
-  const exportPdf = () => {
+  const exportPdf = async () => {
     if (!schedule) return;
-    const doc = generateSchedulePdf(
+    const doc = await generateSchedulePdf(
       {
         title: "Loan Calculator Estimate",
         subtitle: "Indicative amortization schedule",

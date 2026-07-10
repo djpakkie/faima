@@ -158,8 +158,8 @@ function ApplicationDetail() {
     void navigate({ to: "/loans" });
   };
 
-  const exportPdf = () => {
-    const doc = generateSchedulePdf(
+  const exportPdf = async () => {
+    const doc = await generateSchedulePdf(
       {
         title: "Loan Offer / Schedule",
         subtitle: `Application ${app.application_number}`,
