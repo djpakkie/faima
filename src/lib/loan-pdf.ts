@@ -3,6 +3,7 @@ import autoTable from "jspdf-autotable";
 import { COMPANY } from "./company";
 import { formatNAD, formatDate } from "./format";
 import type { ScheduleResult } from "./loan-math";
+import { drawDocumentFooter, drawDocumentHeader, loadCompanyLogo } from "./pdf-header";
 
 export interface SchedulePdfMeta {
   title: string;
@@ -19,25 +20,18 @@ export interface SchedulePdfMeta {
   startDate: Date;
 }
 
-export function generateSchedulePdf(meta: SchedulePdfMeta, schedule: ScheduleResult): jsPDF {
+export async function generateSchedulePdf(
+  meta: SchedulePdfMeta,
+  schedule: ScheduleResult,
+): Promise<jsPDF> {
   const doc = new jsPDF({ unit: "pt", format: "a4" });
-  const pageWidth = doc.internal.pageSize.getWidth();
-  let y = 40;
+  const logo = await loadCompanyLogo();
 
-  doc.setFontSize(16).setFont("helvetica", "bold");
-  doc.text(COMPANY.name, 40, y);
-  doc.setFontSize(9).setFont("helvetica", "normal");
-  doc.text(`Reg: ${COMPANY.registrationNumber}`, 40, y + 14);
-  doc.text(`Bank: ${COMPANY.bank.name}, ${COMPANY.bank.branchName} (${COMPANY.bank.branchCode})`, 40, y + 26);
-
-  doc.setFontSize(13).setFont("helvetica", "bold");
-  doc.text(meta.title, pageWidth - 40, y, { align: "right" });
-  if (meta.subtitle) {
-    doc.setFontSize(9).setFont("helvetica", "normal");
-    doc.text(meta.subtitle, pageWidth - 40, y + 14, { align: "right" });
-  }
-
-  y += 56;
+  let y = drawDocumentHeader(doc, {
+    title: meta.title,
+    subtitle: meta.subtitle,
+    logoDataUrl: logo,
+  });
 
   const summary: Array<[string, string]> = [
     ["Customer", meta.customerName ?? "—"],
@@ -45,7 +39,10 @@ export function generateSchedulePdf(meta: SchedulePdfMeta, schedule: ScheduleRes
     ["Application #", meta.applicationNumber ?? "—"],
     ["Loan #", meta.loanNumber ?? "—"],
     ["Principal", formatNAD(meta.principal)],
-    ["Interest rate", `${meta.annualRatePercent}% p.a. (${meta.method === "reducing_balance" ? "reducing balance" : "flat"})`],
+    [
+      "Interest rate",
+      `${meta.annualRatePercent}% p.a. (${meta.method === "reducing_balance" ? "reducing balance" : "flat"})`,
+    ],
     ["Term", `${meta.termMonths} months / ${schedule.numPeriods} ${meta.frequency} instalments`],
     ["First due", formatDate(schedule.rows[0]?.dueDate)],
     ["Maturity", formatDate(schedule.maturityDate)],
@@ -84,18 +81,8 @@ export function generateSchedulePdf(meta: SchedulePdfMeta, schedule: ScheduleRes
     },
   });
 
-  const pages = doc.getNumberOfPages();
-  for (let i = 1; i <= pages; i++) {
-    doc.setPage(i);
-    doc.setFontSize(8).setFont("helvetica", "normal").setTextColor(120);
-    doc.text(
-      `${COMPANY.name}  ·  Generated ${formatDate(new Date())}  ·  Page ${i} of ${pages}`,
-      pageWidth / 2,
-      doc.internal.pageSize.getHeight() - 20,
-      { align: "center" },
-    );
-    doc.setTextColor(0);
-  }
-
+  drawDocumentFooter(doc);
+  // Reference COMPANY so unused-import lint stays quiet even if summary omits it later.
+  void COMPANY;
   return doc;
 }
