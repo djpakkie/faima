@@ -63,7 +63,7 @@ function PrintAgreement() {
         supabase
           .from("loans")
           .select(
-            "id, loan_number, principal, interest_rate_percent, interest_method, term_months, repayment_frequency, processing_fee, insurance_fee, total_interest, total_repayable, outstanding_balance, disbursed_at, first_due_date, maturity_date, status, customers(full_name, customer_number, id_number, phone, email, address_line1, address_line2, city, employer, monthly_income), loan_products(name)",
+            "id, loan_number, principal, interest_rate_percent, interest_method, term_months, repayment_frequency, processing_fee, insurance_fee, total_interest, total_repayable, outstanding_balance, disbursed_at, first_due_date, maturity_date, status, customers(full_name, customer_number, id_number, phone, email, physical_address, postal_address, employer, monthly_income), loan_products(name)",
           )
           .eq("id", loanId)
           .single(),
