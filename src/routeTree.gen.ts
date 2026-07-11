@@ -24,6 +24,7 @@ import { Route as AuthenticatedCalculatorRouteImport } from './routes/_authentic
 import { Route as AuthenticatedArrearsRouteImport } from './routes/_authenticated/arrears'
 import { Route as AuthenticatedApplicationsRouteImport } from './routes/_authenticated/applications'
 import { Route as AuthenticatedAffordabilityRouteImport } from './routes/_authenticated/affordability'
+import { Route as PrintReceiptsReceiptIdRouteImport } from './routes/print.receipts.$receiptId'
 import { Route as AuthenticatedCustomersCustomerIdRouteImport } from './routes/_authenticated/customers.$customerId'
 import { Route as AuthenticatedApplicationsApplicationIdRouteImport } from './routes/_authenticated/applications.$applicationId'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin/users'
@@ -107,6 +108,11 @@ const AuthenticatedAffordabilityRoute =
     path: '/affordability',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const PrintReceiptsReceiptIdRoute = PrintReceiptsReceiptIdRouteImport.update({
+  id: '/receipts/$receiptId',
+  path: '/receipts/$receiptId',
+  getParentRoute: () => PrintRoute,
+} as any)
 const AuthenticatedCustomersCustomerIdRoute =
   AuthenticatedCustomersCustomerIdRouteImport.update({
     id: '/$customerId',
@@ -139,7 +145,7 @@ const AuthenticatedAdminAuditRoute = AuthenticatedAdminAuditRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/auth': typeof AuthRoute
-  '/print': typeof PrintRoute
+  '/print': typeof PrintRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/affordability': typeof AuthenticatedAffordabilityRoute
   '/applications': typeof AuthenticatedApplicationsRouteWithChildren
@@ -156,10 +162,11 @@ export interface FileRoutesByFullPath {
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/applications/$applicationId': typeof AuthenticatedApplicationsApplicationIdRoute
   '/customers/$customerId': typeof AuthenticatedCustomersCustomerIdRoute
+  '/print/receipts/$receiptId': typeof PrintReceiptsReceiptIdRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
-  '/print': typeof PrintRoute
+  '/print': typeof PrintRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/affordability': typeof AuthenticatedAffordabilityRoute
   '/applications': typeof AuthenticatedApplicationsRouteWithChildren
@@ -177,12 +184,13 @@ export interface FileRoutesByTo {
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/applications/$applicationId': typeof AuthenticatedApplicationsApplicationIdRoute
   '/customers/$customerId': typeof AuthenticatedCustomersCustomerIdRoute
+  '/print/receipts/$receiptId': typeof PrintReceiptsReceiptIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
-  '/print': typeof PrintRoute
+  '/print': typeof PrintRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/affordability': typeof AuthenticatedAffordabilityRoute
   '/_authenticated/applications': typeof AuthenticatedApplicationsRouteWithChildren
@@ -200,6 +208,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/applications/$applicationId': typeof AuthenticatedApplicationsApplicationIdRoute
   '/_authenticated/customers/$customerId': typeof AuthenticatedCustomersCustomerIdRoute
+  '/print/receipts/$receiptId': typeof PrintReceiptsReceiptIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -223,6 +232,7 @@ export interface FileRouteTypes {
     | '/admin/users'
     | '/applications/$applicationId'
     | '/customers/$customerId'
+    | '/print/receipts/$receiptId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
@@ -244,6 +254,7 @@ export interface FileRouteTypes {
     | '/admin/users'
     | '/applications/$applicationId'
     | '/customers/$customerId'
+    | '/print/receipts/$receiptId'
   id:
     | '__root__'
     | '/_authenticated'
@@ -266,12 +277,13 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/users'
     | '/_authenticated/applications/$applicationId'
     | '/_authenticated/customers/$customerId'
+    | '/print/receipts/$receiptId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
-  PrintRoute: typeof PrintRoute
+  PrintRoute: typeof PrintRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
 }
 
@@ -382,6 +394,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAffordabilityRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/print/receipts/$receiptId': {
+      id: '/print/receipts/$receiptId'
+      path: '/receipts/$receiptId'
+      fullPath: '/print/receipts/$receiptId'
+      preLoaderRoute: typeof PrintReceiptsReceiptIdRouteImport
+      parentRoute: typeof PrintRoute
+    }
     '/_authenticated/customers/$customerId': {
       id: '/_authenticated/customers/$customerId'
       path: '/$customerId'
@@ -487,10 +506,20 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface PrintRouteChildren {
+  PrintReceiptsReceiptIdRoute: typeof PrintReceiptsReceiptIdRoute
+}
+
+const PrintRouteChildren: PrintRouteChildren = {
+  PrintReceiptsReceiptIdRoute: PrintReceiptsReceiptIdRoute,
+}
+
+const PrintRouteWithChildren = PrintRoute._addFileChildren(PrintRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
-  PrintRoute: PrintRoute,
+  PrintRoute: PrintRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
 }
 export const routeTree = rootRouteImport
