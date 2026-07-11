@@ -258,9 +258,19 @@ function RepaymentsPage() {
                       </TableCell>
                       <TableCell className="text-xs">{formatDate(r.paid_on)}</TableCell>
                       <TableCell className="text-right">
-                        <Button size="sm" variant="ghost" onClick={() => downloadReceipt(r)}>
-                          <Download className="h-3.5 w-3.5 mr-1" /> PDF
-                        </Button>
+                        <div className="flex justify-end gap-1">
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => window.open(`/print/receipts/${r.id}`, "_blank", "noopener")}
+                            title="Print-friendly view"
+                          >
+                            <Printer className="h-3.5 w-3.5 mr-1" /> Print
+                          </Button>
+                          <Button size="sm" variant="ghost" onClick={() => downloadReceipt(r)}>
+                            <Download className="h-3.5 w-3.5 mr-1" /> PDF
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
