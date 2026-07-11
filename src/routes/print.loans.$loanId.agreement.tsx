@@ -103,7 +103,7 @@ function PrintAgreement() {
   if (!loan) return <div className="print-sheet"><p>Loading…</p></div>;
 
   const c = loan.customers;
-  const address = [c?.address_line1, c?.address_line2, c?.city].filter(Boolean).join(", ") || "—";
+  const address = [c?.physical_address, c?.postal_address].filter(Boolean).join(" · ") || "—";
   const freqLabel = loan.repayment_frequency.replace(/_/g, " ");
   const methodLabel = loan.interest_method === "reducing_balance" ? "reducing balance" : "flat";
   const instalment = rows[0] ? Number(rows[0].instalment) : loan.total_repayable / (rows.length || 1);
