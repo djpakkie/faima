@@ -43,7 +43,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { CreditCard, Download, Loader2, Plus, Search, Check, ChevronsUpDown } from "lucide-react";
+import { CreditCard, Download, Loader2, Plus, Printer, Search, Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/repayments")({
