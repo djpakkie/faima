@@ -30,6 +30,7 @@ import { Route as AuthenticatedApplicationsApplicationIdRouteImport } from './ro
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin/users'
 import { Route as AuthenticatedAdminProductsRouteImport } from './routes/_authenticated/admin/products'
 import { Route as AuthenticatedAdminAuditRouteImport } from './routes/_authenticated/admin/audit'
+import { Route as PrintLoansLoanIdAgreementRouteImport } from './routes/print.loans.$loanId.agreement'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -141,6 +142,12 @@ const AuthenticatedAdminAuditRoute = AuthenticatedAdminAuditRouteImport.update({
   path: '/admin/audit',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const PrintLoansLoanIdAgreementRoute =
+  PrintLoansLoanIdAgreementRouteImport.update({
+    id: '/loans/$loanId/agreement',
+    path: '/loans/$loanId/agreement',
+    getParentRoute: () => PrintRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
@@ -163,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/applications/$applicationId': typeof AuthenticatedApplicationsApplicationIdRoute
   '/customers/$customerId': typeof AuthenticatedCustomersCustomerIdRoute
   '/print/receipts/$receiptId': typeof PrintReceiptsReceiptIdRoute
+  '/print/loans/$loanId/agreement': typeof PrintLoansLoanIdAgreementRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
@@ -185,6 +193,7 @@ export interface FileRoutesByTo {
   '/applications/$applicationId': typeof AuthenticatedApplicationsApplicationIdRoute
   '/customers/$customerId': typeof AuthenticatedCustomersCustomerIdRoute
   '/print/receipts/$receiptId': typeof PrintReceiptsReceiptIdRoute
+  '/print/loans/$loanId/agreement': typeof PrintLoansLoanIdAgreementRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -209,6 +218,7 @@ export interface FileRoutesById {
   '/_authenticated/applications/$applicationId': typeof AuthenticatedApplicationsApplicationIdRoute
   '/_authenticated/customers/$customerId': typeof AuthenticatedCustomersCustomerIdRoute
   '/print/receipts/$receiptId': typeof PrintReceiptsReceiptIdRoute
+  '/print/loans/$loanId/agreement': typeof PrintLoansLoanIdAgreementRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -233,6 +243,7 @@ export interface FileRouteTypes {
     | '/applications/$applicationId'
     | '/customers/$customerId'
     | '/print/receipts/$receiptId'
+    | '/print/loans/$loanId/agreement'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
@@ -255,6 +266,7 @@ export interface FileRouteTypes {
     | '/applications/$applicationId'
     | '/customers/$customerId'
     | '/print/receipts/$receiptId'
+    | '/print/loans/$loanId/agreement'
   id:
     | '__root__'
     | '/_authenticated'
@@ -278,6 +290,7 @@ export interface FileRouteTypes {
     | '/_authenticated/applications/$applicationId'
     | '/_authenticated/customers/$customerId'
     | '/print/receipts/$receiptId'
+    | '/print/loans/$loanId/agreement'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -436,6 +449,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAuditRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/print/loans/$loanId/agreement': {
+      id: '/print/loans/$loanId/agreement'
+      path: '/loans/$loanId/agreement'
+      fullPath: '/print/loans/$loanId/agreement'
+      preLoaderRoute: typeof PrintLoansLoanIdAgreementRouteImport
+      parentRoute: typeof PrintRoute
+    }
   }
 }
 
@@ -508,10 +528,12 @@ const AuthenticatedRouteRouteWithChildren =
 
 interface PrintRouteChildren {
   PrintReceiptsReceiptIdRoute: typeof PrintReceiptsReceiptIdRoute
+  PrintLoansLoanIdAgreementRoute: typeof PrintLoansLoanIdAgreementRoute
 }
 
 const PrintRouteChildren: PrintRouteChildren = {
   PrintReceiptsReceiptIdRoute: PrintReceiptsReceiptIdRoute,
+  PrintLoansLoanIdAgreementRoute: PrintLoansLoanIdAgreementRoute,
 }
 
 const PrintRouteWithChildren = PrintRoute._addFileChildren(PrintRouteChildren)
