@@ -33,9 +33,8 @@ type Loan = {
     id_number: string;
     phone: string | null;
     email: string | null;
-    address_line1: string | null;
-    address_line2: string | null;
-    city: string | null;
+    physical_address: string | null;
+    postal_address: string | null;
     employer: string | null;
     monthly_income: number | null;
   } | null;
