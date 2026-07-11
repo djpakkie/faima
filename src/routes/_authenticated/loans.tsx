@@ -8,7 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Banknote, Loader2, Search } from "lucide-react";
+import { Banknote, Loader2, Printer, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/loans")({
   head: () => ({ meta: [{ title: "Loans — Faima Cash Solutions" }] }),
@@ -115,6 +116,7 @@ function LoansPage() {
                     <TableHead>Disbursed</TableHead>
                     <TableHead>Maturity</TableHead>
                     <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -128,10 +130,19 @@ function LoansPage() {
                       <TableCell className="text-xs">{formatDate(r.disbursed_at)}</TableCell>
                       <TableCell className="text-xs">{formatDate(r.maturity_date)}</TableCell>
                       <TableCell><Badge variant={r.status === "active" ? "default" : "outline"}>{r.status.replace(/_/g, " ")}</Badge></TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => window.open(`/print/loans/${r.id}/agreement`, "_blank", "noopener")}
+                        >
+                          <Printer className="h-3.5 w-3.5 mr-1" /> Print
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   ))}
                   {filtered.length === 0 && (
-                    <TableRow><TableCell colSpan={8} className="text-center text-sm text-muted-foreground py-8">No loans yet.</TableCell></TableRow>
+                    <TableRow><TableCell colSpan={9} className="text-center text-sm text-muted-foreground py-8">No loans yet.</TableCell></TableRow>
                   )}
                 </TableBody>
               </Table>
