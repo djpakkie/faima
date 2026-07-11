@@ -116,6 +116,7 @@ function LoansPage() {
                     <TableHead>Disbursed</TableHead>
                     <TableHead>Maturity</TableHead>
                     <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -129,6 +130,15 @@ function LoansPage() {
                       <TableCell className="text-xs">{formatDate(r.disbursed_at)}</TableCell>
                       <TableCell className="text-xs">{formatDate(r.maturity_date)}</TableCell>
                       <TableCell><Badge variant={r.status === "active" ? "default" : "outline"}>{r.status.replace(/_/g, " ")}</Badge></TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => window.open(`/print/loans/${r.id}/agreement`, "_blank", "noopener")}
+                        >
+                          <Printer className="h-3.5 w-3.5 mr-1" /> Print
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   ))}
                   {filtered.length === 0 && (
