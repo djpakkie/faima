@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as PrintRouteImport } from './routes/print'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
@@ -32,6 +33,11 @@ import { Route as AuthenticatedAdminAuditRouteImport } from './routes/_authentic
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrintRoute = PrintRouteImport.update({
+  id: '/print',
+  path: '/print',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -133,6 +139,7 @@ const AuthenticatedAdminAuditRoute = AuthenticatedAdminAuditRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/auth': typeof AuthRoute
+  '/print': typeof PrintRoute
   '/reset-password': typeof ResetPasswordRoute
   '/affordability': typeof AuthenticatedAffordabilityRoute
   '/applications': typeof AuthenticatedApplicationsRouteWithChildren
@@ -152,6 +159,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
+  '/print': typeof PrintRoute
   '/reset-password': typeof ResetPasswordRoute
   '/affordability': typeof AuthenticatedAffordabilityRoute
   '/applications': typeof AuthenticatedApplicationsRouteWithChildren
@@ -174,6 +182,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/print': typeof PrintRoute
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/affordability': typeof AuthenticatedAffordabilityRoute
   '/_authenticated/applications': typeof AuthenticatedApplicationsRouteWithChildren
@@ -197,6 +206,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/print'
     | '/reset-password'
     | '/affordability'
     | '/applications'
@@ -216,6 +226,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
+    | '/print'
     | '/reset-password'
     | '/affordability'
     | '/applications'
@@ -237,6 +248,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_authenticated'
     | '/auth'
+    | '/print'
     | '/reset-password'
     | '/_authenticated/affordability'
     | '/_authenticated/applications'
@@ -259,6 +271,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  PrintRoute: typeof PrintRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
 }
 
@@ -269,6 +282,13 @@ declare module '@tanstack/react-router' {
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/print': {
+      id: '/print'
+      path: '/print'
+      fullPath: '/print'
+      preLoaderRoute: typeof PrintRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -470,6 +490,7 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  PrintRoute: PrintRoute,
   ResetPasswordRoute: ResetPasswordRoute,
 }
 export const routeTree = rootRouteImport
