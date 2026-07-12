@@ -53,9 +53,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }, 0);
     });
 
+    // Roles can change from elsewhere (an administrator granting you a role
+    // in another tab/session). Refetch when the tab regains focus so that
+    // takes effect without forcing a full logout/login.
+    const onVisible = () => {
+      if (document.visibilityState !== "visible") return;
+      supabase.auth.getSession().then(({ data }) => {
+        if (data.session?.user) {
+          void fetchRoles(data.session.user.id).then((r) => {
+            if (mounted) setRoles(r);
+          });
+        }
+      });
+    };
+    document.addEventListener("visibilitychange", onVisible);
+
     return () => {
       mounted = false;
       sub.subscription.unsubscribe();
+      document.removeEventListener("visibilitychange", onVisible);
     };
   }, []);
 

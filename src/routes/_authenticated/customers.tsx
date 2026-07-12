@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,9 +12,30 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Loader2, Plus, Search, ChevronLeft, ChevronRight, Users } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/customers")({
@@ -43,10 +64,13 @@ function statusBadge(status: string) {
     inactive: "bg-muted text-muted-foreground border-0",
     blacklisted: "bg-destructive/15 text-destructive border-0",
   };
-  return <Badge className={map[status] ?? "bg-muted text-muted-foreground border-0"}>{status}</Badge>;
+  return (
+    <Badge className={map[status] ?? "bg-muted text-muted-foreground border-0"}>{status}</Badge>
+  );
 }
 
 function CustomersPage() {
+  const navigate = useNavigate();
   const { hasAnyRole } = useAuth();
   const canEdit = hasAnyRole(["administrator", "loan_officer"]);
   const [rows, setRows] = useState<Customer[]>([]);
@@ -61,14 +85,19 @@ function CustomersPage() {
     setLoading(true);
     let query = supabase
       .from("customers")
-      .select("id, customer_number, full_name, id_number, phone, email, employer, monthly_income, status, created_at", { count: "exact" })
+      .select(
+        "id, customer_number, full_name, id_number, phone, email, employer, monthly_income, status, created_at",
+        { count: "exact" },
+      )
       .order("created_at", { ascending: false })
       .range(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE - 1);
 
     if (statusFilter !== "all") query = query.eq("status", statusFilter);
     if (q.trim()) {
       const t = `%${q.trim()}%`;
-      query = query.or(`full_name.ilike.${t},customer_number.ilike.${t},id_number.ilike.${t},phone.ilike.${t}`);
+      query = query.or(
+        `full_name.ilike.${t},customer_number.ilike.${t},id_number.ilike.${t},phone.ilike.${t}`,
+      );
     }
 
     const { data, error, count } = await query;
@@ -100,11 +129,17 @@ function CustomersPage() {
         {canEdit && (
           <Dialog open={openCreate} onOpenChange={setOpenCreate}>
             <DialogTrigger asChild>
-              <Button><Plus className="h-4 w-4 mr-1" /> Add customer</Button>
+              <Button>
+                <Plus className="h-4 w-4 mr-1" /> Add customer
+              </Button>
             </DialogTrigger>
             <CustomerFormDialog
               onClose={() => setOpenCreate(false)}
-              onSaved={() => { setOpenCreate(false); setPage(0); void load(); }}
+              onSaved={() => {
+                setOpenCreate(false);
+                setPage(0);
+                void load();
+              }}
             />
           </Dialog>
         )}
@@ -121,11 +156,22 @@ function CustomersPage() {
                 placeholder="Search customers…"
                 className="pl-9"
                 value={q}
-                onChange={(e) => { setPage(0); setQ(e.target.value); }}
+                onChange={(e) => {
+                  setPage(0);
+                  setQ(e.target.value);
+                }}
               />
             </div>
-            <Select value={statusFilter} onValueChange={(v) => { setPage(0); setStatusFilter(v); }}>
-              <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
+            <Select
+              value={statusFilter}
+              onValueChange={(v) => {
+                setPage(0);
+                setStatusFilter(v);
+              }}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue />
+              </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All statuses</SelectItem>
                 <SelectItem value="active">Active</SelectItem>
@@ -157,9 +203,20 @@ function CustomersPage() {
                 </TableHeader>
                 <TableBody>
                   {rows.map((c) => (
-                    <TableRow key={c.id} className="cursor-pointer">
+                    <TableRow
+                      key={c.id}
+                      className="cursor-pointer hover:bg-muted/50"
+                      onClick={() =>
+                        navigate({ to: "/customers/$customerId", params: { customerId: c.id } })
+                      }
+                    >
                       <TableCell className="font-mono text-xs">
-                        <Link to="/customers/$customerId" params={{ customerId: c.id }} className="text-primary hover:underline">
+                        <Link
+                          to="/customers/$customerId"
+                          params={{ customerId: c.id }}
+                          className="text-primary hover:underline"
+                          onClick={(e) => e.stopPropagation()}
+                        >
                           {c.customer_number}
                         </Link>
                       </TableCell>
@@ -167,14 +224,21 @@ function CustomersPage() {
                       <TableCell className="text-muted-foreground">{c.id_number}</TableCell>
                       <TableCell>{c.phone}</TableCell>
                       <TableCell className="text-muted-foreground">{c.employer ?? "—"}</TableCell>
-                      <TableCell className="text-right tabular-nums">{c.monthly_income != null ? formatNAD(Number(c.monthly_income)) : "—"}</TableCell>
+                      <TableCell className="text-right tabular-nums">
+                        {c.monthly_income != null ? formatNAD(Number(c.monthly_income)) : "—"}
+                      </TableCell>
                       <TableCell>{statusBadge(c.status)}</TableCell>
-                      <TableCell className="text-muted-foreground">{formatDate(c.created_at)}</TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {formatDate(c.created_at)}
+                      </TableCell>
                     </TableRow>
                   ))}
                   {rows.length === 0 && (
                     <TableRow>
-                      <TableCell colSpan={8} className="text-center text-sm text-muted-foreground py-8">
+                      <TableCell
+                        colSpan={8}
+                        className="text-center text-sm text-muted-foreground py-8"
+                      >
                         No customers found.
                       </TableCell>
                     </TableRow>
@@ -188,11 +252,23 @@ function CustomersPage() {
 
       {total > PAGE_SIZE && (
         <div className="flex items-center justify-end gap-2">
-          <span className="text-sm text-muted-foreground">Page {page + 1} of {totalPages}</span>
-          <Button variant="outline" size="sm" disabled={page === 0} onClick={() => setPage((p) => Math.max(0, p - 1))}>
+          <span className="text-sm text-muted-foreground">
+            Page {page + 1} of {totalPages}
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={page === 0}
+            onClick={() => setPage((p) => Math.max(0, p - 1))}
+          >
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <Button variant="outline" size="sm" disabled={page + 1 >= totalPages} onClick={() => setPage((p) => p + 1)}>
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={page + 1 >= totalPages}
+            onClick={() => setPage((p) => p + 1)}
+          >
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
@@ -305,7 +381,11 @@ export function CustomerFormDialog({
 
     if (editing && initial?.id) {
       const { error } = await supabase.from("customers").update(payload).eq("id", initial.id);
-      if (error) { toast.error(error.message); setSaving(false); return; }
+      if (error) {
+        toast.error(error.message);
+        setSaving(false);
+        return;
+      }
       await logAudit("customer.update", { entity: "customer", entity_id: initial.id });
       toast.success("Customer updated.");
     } else {
@@ -314,8 +394,16 @@ export function CustomerFormDialog({
         .insert({ ...payload, created_by: user?.id ?? null })
         .select("id, customer_number")
         .single();
-      if (error) { toast.error(error.message); setSaving(false); return; }
-      await logAudit("customer.create", { entity: "customer", entity_id: data.id, meta: { customer_number: data.customer_number } });
+      if (error) {
+        toast.error(error.message);
+        setSaving(false);
+        return;
+      }
+      await logAudit("customer.create", {
+        entity: "customer",
+        entity_id: data.id,
+        meta: { customer_number: data.customer_number },
+      });
       toast.success(`Customer ${data.customer_number} created.`);
     }
     setSaving(false);
@@ -327,18 +415,35 @@ export function CustomerFormDialog({
       <DialogHeader>
         <DialogTitle>{editing ? "Edit customer" : "Add customer"}</DialogTitle>
         <DialogDescription>
-          {editing ? "Update customer details." : "Register a new customer. A customer number is assigned automatically."}
+          {editing
+            ? "Update customer details."
+            : "Register a new customer. A customer number is assigned automatically."}
         </DialogDescription>
       </DialogHeader>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Section title="Personal">
-          <Field label="Full name *"><Input value={values.full_name} onChange={(e) => set("full_name", e.target.value)} /></Field>
-          <Field label="ID / Passport number *"><Input value={values.id_number} onChange={(e) => set("id_number", e.target.value)} /></Field>
-          <Field label="Date of birth"><Input type="date" value={values.date_of_birth} onChange={(e) => set("date_of_birth", e.target.value)} /></Field>
+          <Field label="Full name *">
+            <Input value={values.full_name} onChange={(e) => set("full_name", e.target.value)} />
+          </Field>
+          <Field label="ID / Passport number *">
+            <Input value={values.id_number} onChange={(e) => set("id_number", e.target.value)} />
+          </Field>
+          <Field label="Date of birth">
+            <Input
+              type="date"
+              value={values.date_of_birth}
+              onChange={(e) => set("date_of_birth", e.target.value)}
+            />
+          </Field>
           <Field label="Gender">
-            <Select value={values.gender || "unset"} onValueChange={(v) => set("gender", v === "unset" ? "" : v)}>
-              <SelectTrigger><SelectValue placeholder="Select…" /></SelectTrigger>
+            <Select
+              value={values.gender || "unset"}
+              onValueChange={(v) => set("gender", v === "unset" ? "" : v)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select…" />
+              </SelectTrigger>
               <SelectContent>
                 <SelectItem value="unset">—</SelectItem>
                 <SelectItem value="male">Male</SelectItem>
@@ -348,8 +453,13 @@ export function CustomerFormDialog({
             </Select>
           </Field>
           <Field label="Marital status">
-            <Select value={values.marital_status || "unset"} onValueChange={(v) => set("marital_status", v === "unset" ? "" : v)}>
-              <SelectTrigger><SelectValue placeholder="Select…" /></SelectTrigger>
+            <Select
+              value={values.marital_status || "unset"}
+              onValueChange={(v) => set("marital_status", v === "unset" ? "" : v)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select…" />
+              </SelectTrigger>
               <SelectContent>
                 <SelectItem value="unset">—</SelectItem>
                 <SelectItem value="single">Single</SelectItem>
@@ -362,18 +472,47 @@ export function CustomerFormDialog({
         </Section>
 
         <Section title="Contact">
-          <Field label="Phone *"><Input value={values.phone} onChange={(e) => set("phone", e.target.value)} /></Field>
-          <Field label="Alternate phone"><Input value={values.alt_phone} onChange={(e) => set("alt_phone", e.target.value)} /></Field>
-          <Field label="Email"><Input type="email" value={values.email} onChange={(e) => set("email", e.target.value)} /></Field>
-          <Field label="Physical address"><Textarea rows={2} value={values.physical_address} onChange={(e) => set("physical_address", e.target.value)} /></Field>
-          <Field label="Postal address"><Textarea rows={2} value={values.postal_address} onChange={(e) => set("postal_address", e.target.value)} /></Field>
+          <Field label="Phone *">
+            <Input value={values.phone} onChange={(e) => set("phone", e.target.value)} />
+          </Field>
+          <Field label="Alternate phone">
+            <Input value={values.alt_phone} onChange={(e) => set("alt_phone", e.target.value)} />
+          </Field>
+          <Field label="Email">
+            <Input
+              type="email"
+              value={values.email}
+              onChange={(e) => set("email", e.target.value)}
+            />
+          </Field>
+          <Field label="Physical address">
+            <Textarea
+              rows={2}
+              value={values.physical_address}
+              onChange={(e) => set("physical_address", e.target.value)}
+            />
+          </Field>
+          <Field label="Postal address">
+            <Textarea
+              rows={2}
+              value={values.postal_address}
+              onChange={(e) => set("postal_address", e.target.value)}
+            />
+          </Field>
         </Section>
 
         <Section title="Employment">
-          <Field label="Employer"><Input value={values.employer} onChange={(e) => set("employer", e.target.value)} /></Field>
+          <Field label="Employer">
+            <Input value={values.employer} onChange={(e) => set("employer", e.target.value)} />
+          </Field>
           <Field label="Employment status">
-            <Select value={values.employment_status || "unset"} onValueChange={(v) => set("employment_status", v === "unset" ? "" : v)}>
-              <SelectTrigger><SelectValue placeholder="Select…" /></SelectTrigger>
+            <Select
+              value={values.employment_status || "unset"}
+              onValueChange={(v) => set("employment_status", v === "unset" ? "" : v)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select…" />
+              </SelectTrigger>
               <SelectContent>
                 <SelectItem value="unset">—</SelectItem>
                 <SelectItem value="employed">Employed</SelectItem>
@@ -383,26 +522,67 @@ export function CustomerFormDialog({
               </SelectContent>
             </Select>
           </Field>
-          <Field label="Occupation"><Input value={values.occupation} onChange={(e) => set("occupation", e.target.value)} /></Field>
-          <Field label="Monthly income (N$)"><Input type="number" step="0.01" value={values.monthly_income} onChange={(e) => set("monthly_income", e.target.value)} /></Field>
+          <Field label="Occupation">
+            <Input value={values.occupation} onChange={(e) => set("occupation", e.target.value)} />
+          </Field>
+          <Field label="Monthly income (N$)">
+            <Input
+              type="number"
+              step="0.01"
+              value={values.monthly_income}
+              onChange={(e) => set("monthly_income", e.target.value)}
+            />
+          </Field>
         </Section>
 
         <Section title="Banking">
-          <Field label="Bank"><Input value={values.bank_name} onChange={(e) => set("bank_name", e.target.value)} /></Field>
-          <Field label="Account number"><Input value={values.bank_account_number} onChange={(e) => set("bank_account_number", e.target.value)} /></Field>
-          <Field label="Branch code"><Input value={values.bank_branch_code} onChange={(e) => set("bank_branch_code", e.target.value)} /></Field>
+          <Field label="Bank">
+            <Input value={values.bank_name} onChange={(e) => set("bank_name", e.target.value)} />
+          </Field>
+          <Field label="Account number">
+            <Input
+              value={values.bank_account_number}
+              onChange={(e) => set("bank_account_number", e.target.value)}
+            />
+          </Field>
+          <Field label="Branch code">
+            <Input
+              value={values.bank_branch_code}
+              onChange={(e) => set("bank_branch_code", e.target.value)}
+            />
+          </Field>
         </Section>
 
         <Section title="Next of kin">
-          <Field label="Name"><Input value={values.next_of_kin_name} onChange={(e) => set("next_of_kin_name", e.target.value)} /></Field>
-          <Field label="Phone"><Input value={values.next_of_kin_phone} onChange={(e) => set("next_of_kin_phone", e.target.value)} /></Field>
-          <Field label="Relationship"><Input value={values.next_of_kin_relationship} onChange={(e) => set("next_of_kin_relationship", e.target.value)} /></Field>
+          <Field label="Name">
+            <Input
+              value={values.next_of_kin_name}
+              onChange={(e) => set("next_of_kin_name", e.target.value)}
+            />
+          </Field>
+          <Field label="Phone">
+            <Input
+              value={values.next_of_kin_phone}
+              onChange={(e) => set("next_of_kin_phone", e.target.value)}
+            />
+          </Field>
+          <Field label="Relationship">
+            <Input
+              value={values.next_of_kin_relationship}
+              onChange={(e) => set("next_of_kin_relationship", e.target.value)}
+            />
+          </Field>
         </Section>
 
         <Section title="Status & notes">
           <Field label="Status">
-            <Select value={values.status} onValueChange={(v) => set("status", v as CustomerFormValues["status"])}>
-              <SelectTrigger><SelectValue /></SelectTrigger>
+            <Select
+              value={values.status}
+              onValueChange={(v) => set("status", v as CustomerFormValues["status"])}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
               <SelectContent>
                 <SelectItem value="active">Active</SelectItem>
                 <SelectItem value="inactive">Inactive</SelectItem>
@@ -410,12 +590,20 @@ export function CustomerFormDialog({
               </SelectContent>
             </Select>
           </Field>
-          <Field label="Notes"><Textarea rows={3} value={values.notes} onChange={(e) => set("notes", e.target.value)} /></Field>
+          <Field label="Notes">
+            <Textarea
+              rows={3}
+              value={values.notes}
+              onChange={(e) => set("notes", e.target.value)}
+            />
+          </Field>
         </Section>
       </div>
 
       <DialogFooter>
-        <Button variant="outline" onClick={onClose} disabled={saving}>Cancel</Button>
+        <Button variant="outline" onClick={onClose} disabled={saving}>
+          Cancel
+        </Button>
         <Button onClick={handleSave} disabled={saving}>
           {saving && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
           {editing ? "Save changes" : "Create customer"}
@@ -428,7 +616,9 @@ export function CustomerFormDialog({
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="space-y-2">
-      <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{title}</h3>
+      <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+        {title}
+      </h3>
       <div className="space-y-2">{children}</div>
     </div>
   );
@@ -441,4 +631,3 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
     </div>
   );
 }
-
