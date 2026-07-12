@@ -189,10 +189,10 @@ function Dashboard() {
             const d = new Date(r.due_date);
             return d >= b.start && d < b.end;
           })
-          .reduce((s, r: { total_due: number }) => s + Number(r.total_due || 0), 0);
+          .reduce((s, r: { instalment: number }) => s + Number(r.instalment || 0), 0);
         const received = (repayAllRes.data ?? [])
-          .filter((r: { paid_at: string }) => {
-            const d = new Date(r.paid_at);
+          .filter((r: { paid_on: string }) => {
+            const d = new Date(r.paid_on);
             return d >= b.start && d < b.end;
           })
           .reduce((s, r: { amount: number }) => s + Number(r.amount || 0), 0);
