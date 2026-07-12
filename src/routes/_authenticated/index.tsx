@@ -152,14 +152,14 @@ function Dashboard() {
           .select("id", { count: "exact", head: true })
           .lt("due_date", todayStr)
           .neq("status", "paid"),
-        supabase.from("repayments").select("amount").gte("paid_at", todayStr),
-        supabase.from("repayments").select("amount").gte("paid_at", monthStart),
+        supabase.from("repayments").select("amount").gte("paid_on", todayStr),
+        supabase.from("repayments").select("amount").gte("paid_on", monthStart),
         supabase.from("loans").select("principal, disbursed_at").gte("disbursed_at", rangeStart),
         supabase
           .from("repayment_schedule")
-          .select("due_date, total_due")
+          .select("due_date, instalment")
           .gte("due_date", buckets[0].start.toISOString().slice(0, 10)),
-        supabase.from("repayments").select("paid_at, amount").gte("paid_at", rangeStart),
+        supabase.from("repayments").select("paid_on, amount").gte("paid_on", rangeStart),
       ]);
 
       if (cancelled) return;
