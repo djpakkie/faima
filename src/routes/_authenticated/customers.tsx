@@ -36,7 +36,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2, Plus, Search, ChevronLeft, ChevronRight, Users } from "lucide-react";
+import { Loader2, Plus, Search, ChevronLeft, ChevronRight, Users, Pencil } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/customers")({
   head: () => ({ meta: [{ title: "Customers — Faima Cash Solutions" }] }),
