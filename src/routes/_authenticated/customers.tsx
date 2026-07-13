@@ -36,7 +36,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2, Plus, Search, ChevronLeft, ChevronRight, Users } from "lucide-react";
+import { Loader2, Plus, Search, ChevronLeft, ChevronRight, Users, Pencil } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/customers")({
   head: () => ({ meta: [{ title: "Customers — Faima Cash Solutions" }] }),
@@ -80,6 +80,37 @@ function CustomersPage() {
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [page, setPage] = useState(0);
   const [openCreate, setOpenCreate] = useState(false);
+  const [editing, setEditing] = useState<(Partial<CustomerFormValues> & { id: string }) | null>(null);
+
+  const openEdit = async (id: string) => {
+    const { data, error } = await supabase.from("customers").select("*").eq("id", id).single();
+    if (error || !data) { toast.error(error?.message ?? "Failed to load customer"); return; }
+    setEditing({
+      id: data.id,
+      full_name: data.full_name ?? "",
+      id_number: data.id_number ?? "",
+      date_of_birth: data.date_of_birth ?? "",
+      gender: data.gender ?? "",
+      marital_status: data.marital_status ?? "",
+      phone: data.phone ?? "",
+      alt_phone: data.alt_phone ?? "",
+      email: data.email ?? "",
+      physical_address: data.physical_address ?? "",
+      postal_address: data.postal_address ?? "",
+      employer: data.employer ?? "",
+      employment_status: data.employment_status ?? "",
+      occupation: data.occupation ?? "",
+      monthly_income: data.monthly_income != null ? String(data.monthly_income) : "",
+      bank_name: data.bank_name ?? "",
+      bank_account_number: data.bank_account_number ?? "",
+      bank_branch_code: data.bank_branch_code ?? "",
+      next_of_kin_name: data.next_of_kin_name ?? "",
+      next_of_kin_phone: data.next_of_kin_phone ?? "",
+      next_of_kin_relationship: data.next_of_kin_relationship ?? "",
+      status: (data.status as CustomerFormValues["status"]) ?? "active",
+      notes: data.notes ?? "",
+    });
+  };
 
   const load = async () => {
     setLoading(true);
@@ -199,6 +230,7 @@ function CustomersPage() {
                     <TableHead className="text-right">Income</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Added</TableHead>
+                    {canEdit && <TableHead className="text-right">Actions</TableHead>}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -231,12 +263,26 @@ function CustomersPage() {
                       <TableCell className="text-muted-foreground">
                         {formatDate(c.created_at)}
                       </TableCell>
+                      {canEdit && (
+                        <TableCell className="text-right">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              void openEdit(c.id);
+                            }}
+                          >
+                            <Pencil className="h-4 w-4 mr-1" /> Edit
+                          </Button>
+                        </TableCell>
+                      )}
                     </TableRow>
                   ))}
                   {rows.length === 0 && (
                     <TableRow>
                       <TableCell
-                        colSpan={8}
+                        colSpan={canEdit ? 9 : 8}
                         className="text-center text-sm text-muted-foreground py-8"
                       >
                         No customers found.
@@ -273,9 +319,20 @@ function CustomersPage() {
           </Button>
         </div>
       )}
+
+      {editing && (
+        <Dialog open={!!editing} onOpenChange={(o) => { if (!o) setEditing(null); }}>
+          <CustomerFormDialog
+            initial={editing}
+            onClose={() => setEditing(null)}
+            onSaved={() => { setEditing(null); void load(); }}
+          />
+        </Dialog>
+      )}
     </div>
   );
 }
+
 
 // ---------------------- Create/Edit Dialog ----------------------
 
