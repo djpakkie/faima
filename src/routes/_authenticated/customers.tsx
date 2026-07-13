@@ -263,12 +263,26 @@ function CustomersPage() {
                       <TableCell className="text-muted-foreground">
                         {formatDate(c.created_at)}
                       </TableCell>
+                      {canEdit && (
+                        <TableCell className="text-right">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              void openEdit(c.id);
+                            }}
+                          >
+                            <Pencil className="h-4 w-4 mr-1" /> Edit
+                          </Button>
+                        </TableCell>
+                      )}
                     </TableRow>
                   ))}
                   {rows.length === 0 && (
                     <TableRow>
                       <TableCell
-                        colSpan={8}
+                        colSpan={canEdit ? 9 : 8}
                         className="text-center text-sm text-muted-foreground py-8"
                       >
                         No customers found.
