@@ -88,9 +88,13 @@ function ApplicationDetail() {
 
   const updateStatus = async (patch: Record<string, unknown>, action: string, meta?: Record<string, unknown>) => {
     setBusy(true);
-    const { error } = await supabase.from("loan_applications").update(patch as never).eq("id", app.id);
+    const { data, error } = await supabase.from("loan_applications").update(patch as never).eq("id", app.id).select("id");
     setBusy(false);
     if (error) { toast.error(error.message); return false; }
+    if (!data || data.length === 0) {
+      toast.error("No rows updated — your session may have expired or your role can't change this application. Please sign in again.");
+      return false;
+    }
     await logAudit(action as never, { entity: "loan_application", entity_id: app.id, meta });
     toast.success("Application updated.");
     void load();
