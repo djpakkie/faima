@@ -44,7 +44,7 @@ import {
 } from "@/components/ui/select";
 import { FileText, Loader2, Plus, ExternalLink, Search } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/applications")({
+export const Route = createFileRoute("/_authenticated/applications/")({
   head: () => ({ meta: [{ title: "Loan applications — Faima Cash Solutions" }] }),
   component: ApplicationsPage,
 });
