@@ -230,6 +230,7 @@ function CustomersPage() {
                     <TableHead className="text-right">Income</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Added</TableHead>
+                    {canEdit && <TableHead className="text-right">Actions</TableHead>}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
