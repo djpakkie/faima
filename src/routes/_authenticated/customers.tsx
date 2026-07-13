@@ -319,9 +319,20 @@ function CustomersPage() {
           </Button>
         </div>
       )}
+
+      {editing && (
+        <Dialog open={!!editing} onOpenChange={(o) => { if (!o) setEditing(null); }}>
+          <CustomerFormDialog
+            initial={editing}
+            onClose={() => setEditing(null)}
+            onSaved={() => { setEditing(null); void load(); }}
+          />
+        </Dialog>
+      )}
     </div>
   );
 }
+
 
 // ---------------------- Create/Edit Dialog ----------------------
 
