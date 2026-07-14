@@ -14,7 +14,7 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { ArrowLeft, Download, Loader2, Pencil, Trash2, Upload, FileText } from "lucide-react";
-import { CustomerFormDialog } from "./customers";
+import { CustomerFormDialog } from "./customers.index";
 
 export const Route = createFileRoute("/_authenticated/customers/$customerId")({
   head: () => ({ meta: [{ title: "Customer — Faima Cash Solutions" }] }),
